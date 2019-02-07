@@ -1,4 +1,4 @@
-package com.E2Execel.scanner.Pojo;
+package com.E2Execel.scanner.Pojo.login_details;
 
 
 import com.google.gson.annotations.Expose;

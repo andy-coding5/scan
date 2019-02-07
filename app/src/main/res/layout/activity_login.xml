@@ -37,7 +37,7 @@
                     android:id="@+id/input_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Enter Username or Email"
+                    android:hint="Enter Username/ Email"
                     android:imeOptions="actionNext"
                     android:inputType="textEmailAddress"
                     android:singleLine="true"/>
@@ -70,7 +70,7 @@
                 android:text="Login"
                 android:textAllCaps="false"
                 android:textColor="#FFF"
-                android:textSize="27sp" />
+                android:textSize="23sp" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

@@ -13,7 +13,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.E2Execel.scanner.Pojo.Login;
+import com.E2Execel.scanner.Pojo.login_details.Login;
 import com.E2Execel.scanner.Retrofit.ApiService;
 import com.E2Execel.scanner.Retrofit.RetroClient;
 
@@ -73,8 +73,7 @@ public class LoginActivity extends AppCompatActivity {
         if (email_input.equals("") && password_input.equals("")) {
 
             Build_alert_dialog(LoginActivity.this, "Login Failed", "Credentials required");
-        }
-        else if (email_input.equals("") || password_input.equals("")) {
+        } else if (email_input.equals("") || password_input.equals("")) {
             if (email_input.equals("")) {
                 Build_alert_dialog(LoginActivity.this, "Login Failed", "email required");
                 //Toast.makeText(this, "Please Enter The Email Address", Toast.LENGTH_SHORT).show();
@@ -82,8 +81,7 @@ public class LoginActivity extends AppCompatActivity {
             if (password_input.equals("")) {
                 Build_alert_dialog(LoginActivity.this, "Login Failed", "password required");
             }
-        }
-        else {
+        } else {
             //define the logic to get the use details and match them with the entered details, ,,,,if matched then success  ---RV
 
             Call<Login> call = api.getLoginJason(email_input, password_input, "Android");
@@ -113,7 +111,7 @@ public class LoginActivity extends AppCompatActivity {
                             JSONObject jObjError = new JSONObject(response.errorBody().string());
                             String status = jObjError.getString("message");
                             String error_msg = jObjError.getJSONObject("data").getString("errors");
-                            Build_alert_dialog(LoginActivity.this, "ERRORRRR", error_msg);
+                            Build_alert_dialog(LoginActivity.this, status, error_msg);
 
 
                         } catch (Exception e) {
