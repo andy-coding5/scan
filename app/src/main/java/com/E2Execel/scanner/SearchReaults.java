@@ -29,7 +29,7 @@ public class SearchReaults extends AppCompatActivity {
         ArrayList list = (ArrayList<Datum>) i.getSerializableExtra("datum_list");
         Toast.makeText(this, "list successfully", Toast.LENGTH_SHORT).show();
 
-        
+
 
     }
 
