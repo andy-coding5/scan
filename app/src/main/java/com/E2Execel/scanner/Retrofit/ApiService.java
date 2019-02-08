@@ -1,14 +1,17 @@
 package com.E2Execel.scanner.Retrofit;
 
 import com.E2Execel.scanner.Pojo.login_details.Login;
+import com.E2Execel.scanner.Pojo.result_details.Results;
 import com.E2Execel.scanner.Pojo.search_details.Search;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 public interface ApiService {
 
@@ -28,5 +31,8 @@ public interface ApiService {
     Call<Search> getSearchJason(@Header("APIKEY") String APIKEY, @Header("Authorization") String Authorization,
                                 @Field("searchkey") String searchkey, @Field("source") String source);
 
+
+    @GET("panel/api/v1/device/info/{path}")
+    Call<Results> getResultsJson(@Header("APIKEY") String APIKEY, @Header("Authorization") String Authorization, @Path("path") String path);
 
 }

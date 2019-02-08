@@ -5,7 +5,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -13,6 +12,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.E2Execel.scanner.Pojo.login_details.Login;
 import com.E2Execel.scanner.Pojo.search_details.Datum;
 import com.E2Execel.scanner.Pojo.search_details.Search;
 import com.E2Execel.scanner.Retrofit.ApiService;
@@ -23,11 +23,12 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static com.E2Execel.scanner.LoginActivity.Build_alert_dialog;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private ApiService api;
     private ProgressDialog progressDialog;
     private SharedPreferences pref;
+    private SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowCustomEnabled(true);
 
         pref = getSharedPreferences("SCANNER_PREF", MODE_PRIVATE);
+        editor = pref.edit();
 
         serial_num_edittext = findViewById(R.id.serial_number);
         api = RetroClient.getApiService();
@@ -84,11 +87,12 @@ public class MainActivity extends AppCompatActivity {
                         if (response.body().getStatus().equals("Success")) {
                             //start search result activity
                             ArrayList<Datum> list = (ArrayList<Datum>) response.body().getData();
-                            Intent i = new Intent(MainActivity.this, SearchReaults.class);
+                            Intent i = new Intent(MainActivity.this, SearchResults.class);
                             i.putExtra("datum_list", (Serializable) list);
                             startActivity(i);
 
                         } else {
+                            update_token();
                             try {
                                 JSONObject jObjError = new JSONObject(response.errorBody().string());
                                 String status = jObjError.getString("message");
@@ -125,5 +129,48 @@ public class MainActivity extends AppCompatActivity {
 
 
         }
+    }
+
+    public void update_token() {
+        //pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        //Toast.makeText(this, "email from pref: " + pref.getString("email", "not fetched from pref"), Toast.LENGTH_SHORT).show();
+        ApiService api = RetroClient.getApiService();
+
+
+        Call<Login> call = api.getLoginJason(pref.getString("email", null), pref.getString("password", null), "Android");
+
+        progressDialog.show();
+
+        call.enqueue(new Callback<Login>() {
+            @Override
+            public void onResponse(Call<Login> call, Response<Login> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+
+                    editor.putString("token", response.body().getData().getToken());
+                    editor.commit();
+
+                } else {
+                    //but but i can access the error body here.,
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        String status = jObjError.getString("message");
+                        String error_msg = jObjError.getJSONObject("data").getString("errors");
+                        Build_alert_dialog(getApplicationContext(), status, error_msg);
+
+                    } catch (Exception e) {
+                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Login> call, Throwable t) {
+                progressDialog.dismiss();
+                Build_alert_dialog(MainActivity.this, "Connection Error", "Please Check You Internet Connection");
+            }
+        });
+
+
     }
 }

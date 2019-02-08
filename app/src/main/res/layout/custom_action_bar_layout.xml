@@ -1,39 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/toolbar"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:layout_height="?attr/actionBarSize"
+    android:background="@color/zxing_transparent"
+    app:contentInsetLeft="0dp"
+    app:contentInsetStart="0dp"
+    app:contentInsetStartWithNavigation="0dp"
+    app:layout_collapseMode="pin"
+    app:layout_scrollFlags="scroll|enterAlways"
+    app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
-    <TableRow>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
+        <!-- This is a centered logo -->
         <ImageButton
             android:id="@+id/action_bar_back"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="center_vertical"
-            android:padding="5dp"
-            android:background="@android:color/transparent"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:layout_marginTop="4dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginBottom="4dp"
+            android:background="@color/zxing_transparent"
             android:src="@drawable/back" />
 
+        <!-- This is a centered title -->
 
         <TextView
             android:id="@+id/title"
+            style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_weight="1"
-
-            android:gravity="center_horizontal"
-            android:padding="10dp"
-            android:text="@string/app_name"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textSize="22sp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:text="Record"
+            android:textColor="@color/blue"
             android:textStyle="bold"
-            android:visibility="gone" />
+            android:visibility="visible"
+            android:textSize="22sp"/>
 
 
-    </TableRow>
+        <!-- This is a custom left side button -->
+        <!--
+        <ImageButton
+            android:id="@+id/btn_settings"
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_marginRight="?attr/actionBarSize"
+            android:layout_gravity="start|center_vertical"
+            android:visibility="invisible"
+            android:src="@drawable/ic_settings_white_24dp"
+            style="@style/Widget.AppCompat.ActionButton" />
+            -->
 
-</TableLayout>
+        <!-- This is a custom right side button -->
+
+
+    </FrameLayout>
+</android.support.v7.widget.Toolbar>

@@ -17,6 +17,12 @@ public class Datum implements Serializable {
     @Expose
     private String name;
 
+    public Datum(Integer id, String srno, String name) {
+        this.id = id;
+        this.srno = srno;
+        this.name = name;
+    }
+
     public Integer getId() {
         return id;
     }

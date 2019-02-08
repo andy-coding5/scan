@@ -101,6 +101,8 @@ public class LoginActivity extends AppCompatActivity {
 
                             editor.putString("IsUserLoggedIn", "true");
                             editor.putString("token", response.body().getData().getToken());
+                            editor.putString("email", email_input);
+                            editor.putString("password", password_input);
                             editor.commit();
 
                             //start main activity
