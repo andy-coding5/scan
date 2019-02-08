@@ -151,7 +151,21 @@ public class SearchResults extends AppCompatActivity {
 
                                 Data data = response.body().getData();
 
+                                /*set some values in global class, required in nest 3 activities
+                                 *
+                                 */
 
+                                globalValues.setPvmodulesrno(data.getPvmodulesrno());
+                                globalValues.setPvmoduleimage(data.getPvmoduleimage());
+                                globalValues.setControllersrno(data.getControllersrno());
+                                globalValues.setControllerimage(data.getControllerimage());
+                                globalValues.setHpmotorsrno(data.getHpmotorsrno());
+                                globalValues.setHpmotorimage(data.getHpmotorimage());
+                                globalValues.setInstallationstatus(data.getInstallationstatus());
+                                globalValues.setInstallationimage(data.getInstallationimage());
+
+
+                                //necessary values to be set in next activity
                                 Intent i = new Intent(SearchResults.this, Information.class);
                                 i.putExtra("name", data.getName());
                                 i.putExtra("mobile", data.getMobile());
