@@ -2,6 +2,7 @@ package com.E2Execel.scanner.global;
 
 public  class globalValues {
     public static String APIKEY = "931d2c3421e9499098676ac0122aaca1";
+    private static String ID = "";
     private static String pvmodulesrno = "";
     private static String pvmoduleimage = "";
     private static String controllersrno = "";
@@ -9,6 +10,15 @@ public  class globalValues {
     private static String hpmotorsrno = "";
     private static String hpmotorimage = "";
     private static String installationimage = "";
+
+    public static String getID() {
+        return ID;
+    }
+
+    public static void setID(String ID) {
+        globalValues.ID = ID;
+    }
+
     private static String installationstatus = "";
 
     public static String getPvmodulesrno() {

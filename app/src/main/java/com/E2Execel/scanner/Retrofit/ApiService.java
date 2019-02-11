@@ -4,13 +4,18 @@ import com.E2Execel.scanner.Pojo.login_details.Login;
 import com.E2Execel.scanner.Pojo.result_details.Results;
 import com.E2Execel.scanner.Pojo.search_details.Search;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 
 public interface ApiService {
@@ -34,5 +39,11 @@ public interface ApiService {
 
     @GET("panel/api/v1/device/info/{path}")
     Call<Results> getResultsJson(@Header("APIKEY") String APIKEY, @Header("Authorization") String Authorization, @Path("path") String path);
+
+    @Multipart
+    @POST("panel/api/v1/device/update/{path}")
+    Call<ResponseBody> upload(@Header("APIKEY") String APIKEY, @Header("Authorization") String Authorization,
+                              @Part MultipartBody.Part file1,
+                              @Path("path") String path);
 
 }

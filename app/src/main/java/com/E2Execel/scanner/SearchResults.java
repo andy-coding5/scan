@@ -138,9 +138,9 @@ public class SearchResults extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     Toast.makeText(context, thisDatum.getName(), Toast.LENGTH_LONG).show();
-                    String id = thisDatum.getId().toString();
+                    globalValues.setID(thisDatum.getId().toString());
 
-                    Call<Results> call = api.getResultsJson(globalValues.APIKEY, "Token " + pref.getString("token", null), id);
+                    Call<Results> call = api.getResultsJson(globalValues.APIKEY, "Token " + pref.getString("token", null), globalValues.getID());
                     progressDialog.show();
 
                     call.enqueue(new Callback<Results>() {

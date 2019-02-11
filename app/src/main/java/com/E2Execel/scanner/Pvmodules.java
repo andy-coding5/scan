@@ -3,20 +3,20 @@ package com.E2Execel.scanner;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -26,15 +26,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.E2Execel.scanner.Retrofit.ApiService;
+import com.E2Execel.scanner.Retrofit.RetroClient;
+import com.E2Execel.scanner.global.globalValues;
+import com.bumptech.glide.Glide;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-import com.karumi.dexter.Dexter;
-import com.karumi.dexter.MultiplePermissionsReport;
-import com.karumi.dexter.PermissionToken;
-import com.karumi.dexter.listener.DexterError;
-import com.karumi.dexter.listener.PermissionRequest;
-import com.karumi.dexter.listener.PermissionRequestErrorListener;
-import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -44,7 +41,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import static android.media.MediaRecorder.VideoSource.CAMERA;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Pvmodules extends AppCompatActivity {
 
@@ -54,13 +57,17 @@ public class Pvmodules extends AppCompatActivity {
 
 
     Bitmap myBitmap;
-    Uri picUri;
+    Uri picUri, camUri;
+    String imageFilePath;
     private static final String IMAGE_DIRECTORY = "/demonuts";
     private int GALLERY = 1, CAMERA = 2;
 
     private ArrayList permissionsToRequest;
     private ArrayList permissionsRejected = new ArrayList();
     private ArrayList permissions = new ArrayList();
+
+    private ApiService api;
+    private SharedPreferences pref;
 
     String[] app_permission = {Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
@@ -93,6 +100,8 @@ public class Pvmodules extends AppCompatActivity {
 
         imageview = findViewById(R.id.iv);
 
+        api = RetroClient.getApiService();
+        pref = getSharedPreferences("SCANNER_PREF", MODE_PRIVATE);
 
         if (!checkAndRequestPermission()) {
             //initApp();
@@ -137,7 +146,6 @@ public class Pvmodules extends AppCompatActivity {
         intentIntegrator.initiateScan();
     }
 
-
     public void take_image(View view) {
         showPictureDialog();
     }
@@ -174,9 +182,38 @@ public class Pvmodules extends AppCompatActivity {
     }
 
     private void takePhotoFromCamera() {
-        Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent, CAMERA);
 
+        Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (pictureIntent.resolveActivity(getPackageManager()) != null) {
+            //Create a file to store the image
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+
+            }
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(this, "com.E2Execel.scanner.provider", photoFile);
+                pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(pictureIntent, CAMERA);
+            }
+        }
+
+    }
+
+    private File createImageFile() throws IOException {
+
+        String imageFileName = "IMG_" + System.currentTimeMillis() + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        imageFilePath = image.getAbsolutePath();
+        return image;
     }
 
     @Override
@@ -190,11 +227,41 @@ public class Pvmodules extends AppCompatActivity {
             if (requestCode == GALLERY) {
                 if (data != null) {
                     Uri contentURI = data.getData();
+                    //File file_glr = new File(contentURI.getPath());
                     try {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
                         String path = saveImage(bitmap);
                         Toast.makeText(Pvmodules.this, "Image Saved!", Toast.LENGTH_SHORT).show();
                         imageview.setImageBitmap(bitmap);
+
+
+                        //TAKE PROPER PATH OF FILE.
+                        String[] filePath = {MediaStore.Images.Media.DATA};
+                        Cursor c = getContentResolver().query(contentURI, filePath,
+                                null, null, null);
+                        c.moveToFirst();
+                        int columnIndex = c.getColumnIndex(filePath[0]);
+                        String FilePathStr = c.getString(columnIndex);
+                        c.close();
+
+                        File f = new File(FilePathStr);
+
+                        MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("pvmoduleimage",f.getName(), RequestBody.create(MediaType.parse("image/*"), f));
+
+                        Call<ResponseBody> call = api.upload(globalValues.APIKEY, "Token " + pref.getString("token", null), fileToUpload, globalValues.getID());
+
+                        call.enqueue(new Callback<ResponseBody>() {
+                            @Override
+                            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                                Log.v("upload", "success");
+                            }
+
+                            @Override
+                            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                                Log.e("Upload error:", t.getMessage());
+                            }
+                        });
 
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -202,11 +269,21 @@ public class Pvmodules extends AppCompatActivity {
                     }
                 }
 
-            } else if (requestCode == CAMERA) {
-                Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-                imageview.setImageBitmap(thumbnail);
-                saveImage(thumbnail);
-                Toast.makeText(Pvmodules.this, "Image Saved!", Toast.LENGTH_SHORT).show();
+            }
+            if (requestCode == CAMERA) {
+                //don't compare the data to null, it will always come as  null because we are providing a file URI, so load with the imageFilePath we obtained before opening the cameraIntent
+                Glide.with(this).load(imageFilePath).into(imageview);
+                File file = getOutputMediaFile();
+                Uri uri = Uri.fromFile(file);
+
+
+                Toast.makeText(this, "complete", Toast.LENGTH_SHORT).show();
+
+
+                //uploading -- testing
+
+
+                // If you are using Glide.
             }
         } else {
             IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
@@ -224,9 +301,24 @@ public class Pvmodules extends AppCompatActivity {
 
     }
 
+    private static File getOutputMediaFile() {
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES), "SCANNER");
+
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
+                return null;
+            }
+        }
+
+
+        return new File(mediaStorageDir.getPath() + File.separator +
+                "IMG_" + System.currentTimeMillis() + ".jpg");
+    }
+
     public String saveImage(Bitmap myBitmap) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        myBitmap.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
+        myBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
         File wallpaperDirectory = new File(
                 Environment.getExternalStorageDirectory() + IMAGE_DIRECTORY);
         // have the object build the directory structure, if needed.
