@@ -58,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
         progressDialog.setMessage("Wait");
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 
+        update_token();
+
 
     }
 
@@ -105,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }
                     } else {
+                        update_token();
                         try {
                             JSONObject jObjError = new JSONObject(response.errorBody().string());
                             String status = jObjError.getString("message");
@@ -146,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<Login> call, Response<Login> response) {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
-
+                    Toast.makeText(MainActivity.this, "new token: "+"token "+ response.body().getData().getToken(), Toast.LENGTH_SHORT).show();
                     editor.putString("token", response.body().getData().getToken());
                     editor.commit();
 

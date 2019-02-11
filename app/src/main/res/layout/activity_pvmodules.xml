@@ -43,11 +43,10 @@
             android:paddingRight="70dp"
             android:text="Scan Code"
             android:textAllCaps="false"
-
             android:textColor="#FFF" />
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/iv"
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:layout_gravity="center"
@@ -62,11 +61,12 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
-            android:textAllCaps="false"
             android:background="@color/blue"
+            android:onClick="take_image"
             android:paddingLeft="70dp"
             android:paddingRight="70dp"
             android:text="Take Image"
+            android:textAllCaps="false"
             android:textColor="#FFF" />
     </LinearLayout>
 
@@ -74,17 +74,17 @@
         android:id="@+id/next"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_gravity="center"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="25dp"
-        android:layout_alignParentBottom="true"
         android:background="@color/blue"
         android:paddingLeft="50dp"
         android:paddingRight="50dp"
         android:text="Next"
-        android:textSize="22sp"
         android:textAllCaps="false"
-        android:textColor="#FFF" />
+        android:textColor="#FFF"
+        android:textSize="22sp" />
 
 </RelativeLayout>
