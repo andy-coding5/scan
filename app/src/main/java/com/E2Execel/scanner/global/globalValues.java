@@ -10,6 +10,7 @@ public  class globalValues {
     private static String hpmotorsrno = "";
     private static String hpmotorimage = "";
     private static String installationimage = "";
+    private static String installationstatus = "";
 
     public static String getID() {
         return ID;
@@ -19,7 +20,6 @@ public  class globalValues {
         globalValues.ID = ID;
     }
 
-    private static String installationstatus = "";
 
     public static String getPvmodulesrno() {
         return pvmodulesrno;

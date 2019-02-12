@@ -1,29 +1,29 @@
 package com.E2Execel.scanner;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.media.MediaScannerConnection;
 import android.net.Uri;
-import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,28 +38,23 @@ import com.google.zxing.integration.android.IntentResult;
 
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
+import java.util.Map;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.E2Execel.scanner.LoginActivity.Build_alert_dialog;
 
-public class Pvmodules extends AppCompatActivity {
+public class Installation extends AppCompatActivity {
 
     Activity activity;
-    TextView srno_textview;
+
     private ImageView imageview;
 
 
@@ -72,21 +67,23 @@ public class Pvmodules extends AppCompatActivity {
 
 
     private ProgressDialog progressDialog;
+    private Dialog dialog;
+    private ListView listview_status;
+    private TextView status_tv;
+    private String selected_status = "";
 
     private ApiService api;
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
 
-    String[] app_permission = {Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
-
-    private final static int ALL_PERMISSIONS_RESULT = 1240;
     private static int IMAGE_SET = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pvmodules);
+        setContentView(R.layout.activity_installation);
+
 
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setDisplayShowCustomEnabled(true);
@@ -94,7 +91,7 @@ public class Pvmodules extends AppCompatActivity {
         View view = getSupportActionBar().getCustomView();
 
         TextView t = view.findViewById(R.id.title);
-        t.setText("PV Modules");       //title of the screen ... in custom action bar
+        t.setText("Installation");       //title of the screen ... in custom action bar
 
         ImageButton imageButton = (ImageButton) view.findViewById(R.id.action_bar_back);
         imageButton.setOnClickListener(new View.OnClickListener() {
@@ -106,26 +103,22 @@ public class Pvmodules extends AppCompatActivity {
 
         activity = this;
 
-        srno_textview = findViewById(R.id.input_srno);
+
         imageview = findViewById(R.id.iv);
+        status_tv = findViewById(R.id.status_textview);
 
         api = RetroClient.getApiService();
         pref = getSharedPreferences("SCANNER_PREF", MODE_PRIVATE);
         editor = pref.edit();
 
         // Set up progress before call
-        progressDialog = new ProgressDialog(Pvmodules.this);
+        progressDialog = new ProgressDialog(Installation.this);
         progressDialog.setMax(100);
         progressDialog.setMessage("Wait");
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 
         update_token();
 
-
-        if (!checkAndRequestPermission()) {
-            //initApp();
-
-        }
         check_first();
 
     }
@@ -145,7 +138,7 @@ public class Pvmodules extends AppCompatActivity {
             public void onResponse(Call<Login> call, Response<Login> response) {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
-                    Toast.makeText(Pvmodules.this, "new token: " + "token " + response.body().getData().getToken(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Installation.this, "new token: " + "token " + response.body().getData().getToken(), Toast.LENGTH_SHORT).show();
                     editor.putString("token", response.body().getData().getToken());
                     editor.commit();
 
@@ -166,52 +159,25 @@ public class Pvmodules extends AppCompatActivity {
             @Override
             public void onFailure(Call<Login> call, Throwable t) {
                 progressDialog.dismiss();
-                Build_alert_dialog(Pvmodules.this, "Connection Error", "Please Check You Internet Connection");
+                Build_alert_dialog(Installation.this, "Connection Error", "Please Check You Internet Connection");
             }
         });
 
 
     }
 
-    private boolean checkAndRequestPermission() {
-        List<String> listPermissionNeeded = new ArrayList<>();
-        for (String perm : app_permission) {
-            if (ContextCompat.checkSelfPermission(this, perm) != PackageManager.PERMISSION_GRANTED) {
-                //ask to grant the permission
-                listPermissionNeeded.add(perm);
-
-            }
-
-        }
-
-        if (!listPermissionNeeded.isEmpty()) {
-            ActivityCompat.requestPermissions(this, listPermissionNeeded.toArray(new String[listPermissionNeeded.size()]), ALL_PERMISSIONS_RESULT);
-            return false;
-        }
-        return true;
-    }
-
     private void check_first() {
-        if (!globalValues.getPvmodulesrno().equals("")) {
-            srno_textview.setText(globalValues.getPvmodulesrno());
+        if (!globalValues.getInstallationstatus().equals("")) {
+            status_tv.setText(globalValues.getInstallationstatus());
         }
-        if (!globalValues.getPvmoduleimage().equals("")) {
-            Glide.with(this).load("http://192.168.1.6:8000" + globalValues.getPvmoduleimage()).into(imageview);
+
+
+        if (!globalValues.getInstallationimage().equals("")) {
+            Glide.with(this).load("http://192.168.1.6:8000" + globalValues.getInstallationimage()).into(imageview);
             IMAGE_SET = 1;
-            Log.v("image_set", "http://192.168.1.6:8000" + globalValues.getPvmoduleimage());
+            Log.v("image_set", "http://192.168.1.6:800" + globalValues.getInstallationimage());
         }
 
-    }
-
-    public void scan_code(View view) {
-        IntentIntegrator intentIntegrator = new IntentIntegrator(activity);
-        intentIntegrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
-        intentIntegrator.setPrompt("Scan a Code");
-
-        intentIntegrator.setCameraId(0);
-        intentIntegrator.setBeepEnabled(false);
-        intentIntegrator.setBarcodeImageEnabled(true);
-        intentIntegrator.initiateScan();
     }
 
     public void take_image(View view) {
@@ -299,7 +265,7 @@ public class Pvmodules extends AppCompatActivity {
                     try {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
                         //String path = saveImage(bitmap);
-                        //Toast.makeText(Pvmodules.this, "Image Saved!", Toast.LENGTH_SHORT).show();
+                        //  Toast.makeText(Pvmodules.this, "Image Saved!", Toast.LENGTH_SHORT).show();
                         imageview.setImageBitmap(bitmap);
 
                         IMAGE_SET = 1;
@@ -316,12 +282,12 @@ public class Pvmodules extends AppCompatActivity {
 
                         File f = new File(FilePathStr);
 
-                        image_file_to_upload = MultipartBody.Part.createFormData("pvmoduleimage", f.getName(), RequestBody.create(MediaType.parse("image/*"), f));
+                        image_file_to_upload = MultipartBody.Part.createFormData("installationimage", f.getName(), RequestBody.create(MediaType.parse("image/*"), f));
 
 
                     } catch (IOException e) {
                         e.printStackTrace();
-                        Toast.makeText(Pvmodules.this, "Failed!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Installation.this, "Failed!", Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -337,67 +303,69 @@ public class Pvmodules extends AppCompatActivity {
                 File file = new File(camUri.getPath());
 
 
-                image_file_to_upload = MultipartBody.Part.createFormData("pvmoduleimage", file.getName(), RequestBody.create(MediaType.parse("image/*"), file));
+                image_file_to_upload = MultipartBody.Part.createFormData("installationimage", file.getName(), RequestBody.create(MediaType.parse("image/*"), file));
 
 
             }
 
             // Toast.makeText(this, "complete", Toast.LENGTH_SHORT).show();
 
-        } else {      //if request code is not 1 or 2 then the intent result is of scanner intent
-            IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-            if (result != null) {
-                if (result.getContents() == null) {
-                    Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
-                    srno_textview.setText(result.getContents());
-                }
-            } else {
-                super.onActivityResult(requestCode, resultCode, data);
+        }
+
+    }
+
+    public void status_selection(View view) {
+
+        dialog = new Dialog(Installation.this);
+        dialog.setContentView(R.layout.list_view);
+        dialog.setTitle("Select Status");
+        dialog.setCancelable(true);
+
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
+
+        //prepare a list view in dialog
+        listview_status = dialog.findViewById(R.id.dialogList);
+
+        String[] status_options = {"Pending", "Complete", "Incomplete"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.list_item, R.id.textViewStyle, status_options);
+        listview_status.setAdapter(adapter);
+
+
+        listview_status.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //Toast.makeText(personal_info_1.this, "Clicked Item: " + parent.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
+                view.setSelected(true);
+                selected_status = parent.getItemAtPosition(position).toString();
+
+
+                status_tv.setText(selected_status);
+
+                dialog.dismiss();
+
+
             }
-        }
+        });
 
+
+        View view1 = dialog.findViewById(R.id.cancel_btn);
+        Button cancel_btn = view1.findViewById(R.id.cancel_btn);
+        cancel_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
     }
 
 
-
-    /*public String saveImage(Bitmap myBitmap) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        myBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        File wallpaperDirectory = new File(
-                Environment.getExternalStorageDirectory() + IMAGE_DIRECTORY);
-        // have the object build the directory structure, if needed.
-        if (!wallpaperDirectory.exists()) {
-            wallpaperDirectory.mkdirs();
-        }
-
-        try {
-            File f = new File(wallpaperDirectory, Calendar.getInstance()
-                    .getTimeInMillis() + ".jpg");
-            f.createNewFile();
-            FileOutputStream fo = new FileOutputStream(f);
-            fo.write(bytes.toByteArray());
-            MediaScannerConnection.scanFile(this,
-                    new String[]{f.getPath()},
-                    new String[]{"image/jpeg"}, null);
-            fo.close();
-            Log.d("TAG", "File Saved::--->" + f.getAbsolutePath());
-
-            return f.getAbsolutePath();
-        } catch (IOException e1) {
-            e1.printStackTrace();
-        }
-        return "";
-    }
-    */
-
-
-    public void next_activity(View view) {
-
+    public void save_info(View view) {
         //CALL
-        Call<UpdateDetails> call = api.uploadPvmoduleInfo(globalValues.APIKEY, "Token " + pref.getString("token", null),
-                image_file_to_upload, RequestBody.create(MediaType.parse("text/plain"), srno_textview.getText().toString()), globalValues.getID());
+        Call<UpdateDetails> call = api.uploadInstallationInfo(globalValues.APIKEY, "Token " + pref.getString("token", null),
+                image_file_to_upload, RequestBody.create(MediaType.parse("text/plain"), status_tv.getText().toString()), globalValues.getID());
 
         progressDialog.show();
 
@@ -407,11 +375,13 @@ public class Pvmodules extends AppCompatActivity {
             public void onResponse(Call<UpdateDetails> call, Response<UpdateDetails> response) {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
-                    if(response.body().getStatus().equals("Success")){
-                        Toast.makeText(Pvmodules.this, "successfully uploaded", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(Pvmodules.this, Controller.class));
+                    if (response.body().getStatus().equals("Success")) {
+                        Toast.makeText(Installation.this, "successfully uploaded", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(Installation.this, MainActivity.class));
+                        finishAffinity();
 
                     }
+
 
                 } else {
 
@@ -419,7 +389,7 @@ public class Pvmodules extends AppCompatActivity {
                         JSONObject jObjError = new JSONObject(response.errorBody().string());
                         String status = jObjError.getString("message");
                         String error_msg = jObjError.getJSONObject("data").getString("errors");
-                        Build_alert_dialog(Pvmodules.this, status, error_msg);
+                        Build_alert_dialog(Installation.this, status, error_msg);
 
                     } catch (Exception e) {
                         Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
@@ -432,10 +402,10 @@ public class Pvmodules extends AppCompatActivity {
             public void onFailure(Call<UpdateDetails> call, Throwable t) {
 
                 progressDialog.dismiss();
-                Build_alert_dialog(Pvmodules.this, "Connection Error", "Please Check You Internet Connection");
+                Build_alert_dialog(Installation.this, "Connection Error", "Please Check You Internet Connection");
 
             }
         });
-
     }
+
 }

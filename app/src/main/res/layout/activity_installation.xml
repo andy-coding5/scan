@@ -6,51 +6,22 @@
     android:layout_height="match_parent"
     android:focusableInTouchMode="true"
     android:orientation="vertical"
-    tools:context=".Pvmodules">
+    tools:context=".Installation">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="start"
+        android:layout_marginTop="100dp"
         android:orientation="vertical">
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/textInputLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp">
-
-            <EditText
-                android:id="@+id/input_srno"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Enter PV Module number"
-                android:imeOptions="actionNext"
-                android:inputType="textEmailAddress"
-                android:singleLine="true" />
-
-        </android.support.design.widget.TextInputLayout>
-
-        <Button
-            android:id="@+id/scan_code"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:background="@color/blue"
-            android:onClick="scan_code"
-            android:paddingLeft="70dp"
-            android:paddingRight="70dp"
-            android:text="Scan Code"
-            android:textAllCaps="false"
-            android:textColor="#FFF" />
 
         <ImageView
             android:id="@+id/iv"
             android:layout_width="200dp"
             android:layout_height="200dp"
             android:layout_gravity="center"
-            android:layout_marginTop="50dp"
+
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
             android:src="@drawable/upload_photo" />
@@ -68,6 +39,23 @@
             android:text="Take Image"
             android:textAllCaps="false"
             android:textColor="#FFF" />
+
+
+        <TextView
+
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="75dp"
+            android:layout_marginEnd="30dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/textview_dropdown_layout"
+            android:ems="10"
+            android:id="@+id/status_textview"
+            android:onClick="status_selection"
+            android:padding="10dp"
+            android:text="Set Status"
+            android:textSize="16sp" />
     </LinearLayout>
 
     <Button
@@ -80,10 +68,10 @@
         android:layout_marginRight="20dp"
         android:layout_marginBottom="25dp"
         android:background="@color/blue"
+        android:onClick="save_info"
         android:paddingLeft="50dp"
         android:paddingRight="50dp"
-        android:text="Next"
-        android:onClick="next_activity"
+        android:text="Save"
         android:textAllCaps="false"
         android:textColor="#FFF"
         android:textSize="22sp" />

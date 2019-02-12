@@ -9,6 +9,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -43,11 +44,26 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        pref = getSharedPreferences("SCANNER_PREF", MODE_PRIVATE);
+        editor = pref.edit();
+
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setDisplayShowCustomEnabled(true);
 
-        pref = getSharedPreferences("SCANNER_PREF", MODE_PRIVATE);
-        editor = pref.edit();
+        getSupportActionBar().setCustomView(R.layout.custom_action_bar_logout_layout);
+        View view = getSupportActionBar().getCustomView();
+
+        Button logout_button = view.findViewById(R.id.action_bar_logout);
+        logout_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                editor.clear();
+                editor.commit();
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                finishAffinity();
+            }
+        });
+
 
         serial_num_edittext = findViewById(R.id.serial_number);
         api = RetroClient.getApiService();
@@ -149,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<Login> call, Response<Login> response) {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
-                    Toast.makeText(MainActivity.this, "new token: "+"token "+ response.body().getData().getToken(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "new token: " + "token " + response.body().getData().getToken(), Toast.LENGTH_SHORT).show();
                     editor.putString("token", response.body().getData().getToken());
                     editor.commit();
 
@@ -175,5 +191,11 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finishAffinity();
     }
 }

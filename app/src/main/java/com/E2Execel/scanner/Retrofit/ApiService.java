@@ -41,10 +41,33 @@ public interface ApiService {
     @GET("panel/api/v1/device/info/{path}")
     Call<Results> getResultsJson(@Header("APIKEY") String APIKEY, @Header("Authorization") String Authorization, @Path("path") String path);
 
+    //for PvModule
     @Multipart
     @POST("panel/api/v1/device/update/{path}")
-    Call<UpdateDetails> upload(@Header("APIKEY") String APIKEY, @Header("Authorization") String Authorization,
-                               @Part MultipartBody.Part file1, @Part("pvmodulesrno") RequestBody pvmodulesrno,
-                               @Path("path") String path);
+    Call<UpdateDetails> uploadPvmoduleInfo(@Header("APIKEY") String APIKEY, @Header("Authorization") String Authorization,
+                                           @Part MultipartBody.Part file1, @Part("pvmodulesrno") RequestBody pvmodulesrno,
+                                           @Path("path") String path);
+
+    //for Controler Info
+    @Multipart
+    @POST("panel/api/v1/device/update/{path}")
+    Call<UpdateDetails> uploadControllerInfo(@Header("APIKEY") String APIKEY, @Header("Authorization") String Authorization,
+                                             @Part MultipartBody.Part file1, @Part("controllersrno") RequestBody controllersrno,
+                                             @Path("path") String path);
+
+    //for Hp motors info
+    @Multipart
+    @POST("panel/api/v1/device/update/{path}")
+    Call<UpdateDetails> uploadHpmotorInfo(@Header("APIKEY") String APIKEY, @Header("Authorization") String Authorization,
+                                          @Part MultipartBody.Part file1, @Part("hpmotorsrno") RequestBody hpmotorsrno,
+                                          @Path("path") String path);
+
+
+    //for Installation info
+    @Multipart
+    @POST("panel/api/v1/device/update/{path}")
+    Call<UpdateDetails> uploadInstallationInfo(@Header("APIKEY") String APIKEY, @Header("Authorization") String Authorization,
+                                               @Part MultipartBody.Part file1, @Part("installationstatus") RequestBody installationstatus,
+                                               @Path("path") String path);
 
 }

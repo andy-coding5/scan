@@ -154,7 +154,6 @@ public class SearchResults extends AppCompatActivity {
                                 /*set some values in global class, required in nest 3 activities
                                  *
                                  */
-
                                 globalValues.setPvmodulesrno(data.getPvmodulesrno());
                                 globalValues.setPvmoduleimage(data.getPvmoduleimage());
                                 globalValues.setControllersrno(data.getControllersrno());
