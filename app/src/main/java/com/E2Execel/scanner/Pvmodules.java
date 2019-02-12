@@ -26,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.E2Execel.scanner.Pojo.update_details.UpdateDetails;
 import com.E2Execel.scanner.Retrofit.ApiService;
 import com.E2Execel.scanner.Retrofit.RetroClient;
 import com.E2Execel.scanner.global.globalValues;
@@ -246,19 +247,22 @@ public class Pvmodules extends AppCompatActivity {
 
                         File f = new File(FilePathStr);
 
-                        MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("pvmoduleimage",f.getName(), RequestBody.create(MediaType.parse("image/*"), f));
+                        MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("pvmoduleimage", f.getName(), RequestBody.create(MediaType.parse("image/*"), f));
 
-                        Call<ResponseBody> call = api.upload(globalValues.APIKEY, "Token " + pref.getString("token", null), fileToUpload, globalValues.getID());
 
-                        call.enqueue(new Callback<ResponseBody>() {
+                        //CALL
+                        Call<UpdateDetails> call = api.upload(globalValues.APIKEY, "Token " + pref.getString("token", null),
+                                fileToUpload, RequestBody.create(MediaType.parse("text/plain"), "445120578"), globalValues.getID());
+
+                        call.enqueue(new Callback<UpdateDetails>() {
                             @Override
-                            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                            public void onResponse(Call<UpdateDetails> call, Response<UpdateDetails> response) {
 
                                 Log.v("upload", "success");
                             }
 
                             @Override
-                            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                            public void onFailure(Call<UpdateDetails> call, Throwable t) {
                                 Log.e("Upload error:", t.getMessage());
                             }
                         });
@@ -274,17 +278,51 @@ public class Pvmodules extends AppCompatActivity {
                 //don't compare the data to null, it will always come as  null because we are providing a file URI, so load with the imageFilePath we obtained before opening the cameraIntent
                 Glide.with(this).load(imageFilePath).into(imageview);
                 File file = getOutputMediaFile();
-                Uri uri = Uri.fromFile(file);
+                camUri = Uri.fromFile(new File(imageFilePath));
 
 
-                Toast.makeText(this, "complete", Toast.LENGTH_SHORT).show();
+                file = new File(camUri.getPath());
+                //TAKE PROPER PATH OF FILE.
+               /* String[] filePath = {MediaStore.Images.Media.DATA};
+                Cursor c = getContentResolver().query(uri, filePath,
+                        null, null, null);
+                c.moveToFirst();
+                int columnIndex = c.getColumnIndex(filePath[0]);
+                String FilePathStr = c.getString(columnIndex);
+                c.close();
+                File f = new File(FilePathStr);*/
+
+                MultipartBody.Part fileToUpload = MultipartBody.Part.createFormData("pvmoduleimage", file.getName(), RequestBody.create(MediaType.parse("image/*"), file));
 
 
-                //uploading -- testing
+                //CALL
+                Call<UpdateDetails> call = api.upload(globalValues.APIKEY, "Token " + pref.getString("token", null),
+                        fileToUpload, RequestBody.create(MediaType.parse("text/plain"), "12636588"), globalValues.getID());
 
+                call.enqueue(new Callback<UpdateDetails>() {
+                    @Override
+                    public void onResponse(Call<UpdateDetails> call, Response<UpdateDetails> response) {
 
-                // If you are using Glide.
+                        Log.v("upload", "success");
+                    }
+
+                    @Override
+                    public void onFailure(Call<UpdateDetails> call, Throwable t) {
+                        Log.e("Upload error:", t.getMessage());
+                    }
+                });
+
             }
+
+
+            Toast.makeText(this, "complete", Toast.LENGTH_SHORT).show();
+
+
+            //uploading -- testing
+
+
+            // If you are using Glide.
+
         } else {
             IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
             if (result != null) {

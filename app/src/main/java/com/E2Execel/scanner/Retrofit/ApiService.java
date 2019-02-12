@@ -3,6 +3,7 @@ package com.E2Execel.scanner.Retrofit;
 import com.E2Execel.scanner.Pojo.login_details.Login;
 import com.E2Execel.scanner.Pojo.result_details.Results;
 import com.E2Execel.scanner.Pojo.search_details.Search;
+import com.E2Execel.scanner.Pojo.update_details.UpdateDetails;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -42,8 +43,8 @@ public interface ApiService {
 
     @Multipart
     @POST("panel/api/v1/device/update/{path}")
-    Call<ResponseBody> upload(@Header("APIKEY") String APIKEY, @Header("Authorization") String Authorization,
-                              @Part MultipartBody.Part file1,
-                              @Path("path") String path);
+    Call<UpdateDetails> upload(@Header("APIKEY") String APIKEY, @Header("Authorization") String Authorization,
+                               @Part MultipartBody.Part file1, @Part("pvmodulesrno") RequestBody pvmodulesrno,
+                               @Path("path") String path);
 
 }
