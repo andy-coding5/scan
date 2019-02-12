@@ -154,7 +154,7 @@ public class Controller extends AppCompatActivity {
     }
 
     private void check_first() {
-        if (!globalValues.getControllersrno().equals("")) {
+        if (!"".equals(globalValues.getControllersrno())) {
             srno_textview.setText(globalValues.getControllersrno());
         }
         if (!globalValues.getControllerimage().equals("")) {
@@ -327,7 +327,7 @@ public class Controller extends AppCompatActivity {
 
         //CALL
         Call<UpdateDetails> call = api.uploadControllerInfo(globalValues.APIKEY, "Token " + pref.getString("token", null),
-                image_file_to_upload, RequestBody.create(MediaType.parse("text/plain"), srno_textview.getText().toString()), globalValues.getID());
+                image_file_to_upload, RequestBody.create(MediaType.parse("text/plain"), srno_textview.getText().toString()), RequestBody.create(MediaType.parse("text/plain"), "Android"), globalValues.getID());
 
         progressDialog.show();
 
@@ -337,7 +337,7 @@ public class Controller extends AppCompatActivity {
             public void onResponse(Call<UpdateDetails> call, Response<UpdateDetails> response) {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
-                    if(response.body().getStatus().equals("Success")){
+                    if (response.body().getStatus().equals("Success")) {
                         Toast.makeText(Controller.this, "successfully uploaded", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(Controller.this, Hpmotor.class));
 

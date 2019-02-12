@@ -192,7 +192,7 @@ public class Pvmodules extends AppCompatActivity {
     }
 
     private void check_first() {
-        if (!globalValues.getPvmodulesrno().equals("")) {
+        if (!"".equals(globalValues.getPvmodulesrno())) {
             srno_textview.setText(globalValues.getPvmodulesrno());
         }
         if (!globalValues.getPvmoduleimage().equals("")) {
@@ -397,7 +397,7 @@ public class Pvmodules extends AppCompatActivity {
 
         //CALL
         Call<UpdateDetails> call = api.uploadPvmoduleInfo(globalValues.APIKEY, "Token " + pref.getString("token", null),
-                image_file_to_upload, RequestBody.create(MediaType.parse("text/plain"), srno_textview.getText().toString()), globalValues.getID());
+                image_file_to_upload, RequestBody.create(MediaType.parse("text/plain"), srno_textview.getText().toString()), RequestBody.create(MediaType.parse("text/plain"), "Android"), globalValues.getID());
 
         progressDialog.show();
 

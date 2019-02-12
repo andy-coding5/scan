@@ -167,7 +167,7 @@ public class Installation extends AppCompatActivity {
     }
 
     private void check_first() {
-        if (!globalValues.getInstallationstatus().equals("")) {
+        if (!"".equals(globalValues.getInstallationstatus())) {
             status_tv.setText(globalValues.getInstallationstatus());
         }
 
@@ -365,7 +365,7 @@ public class Installation extends AppCompatActivity {
     public void save_info(View view) {
         //CALL
         Call<UpdateDetails> call = api.uploadInstallationInfo(globalValues.APIKEY, "Token " + pref.getString("token", null),
-                image_file_to_upload, RequestBody.create(MediaType.parse("text/plain"), status_tv.getText().toString()), globalValues.getID());
+                image_file_to_upload, RequestBody.create(MediaType.parse("text/plain"), status_tv.getText().toString()), RequestBody.create(MediaType.parse("text/plain"), "Android"), globalValues.getID());
 
         progressDialog.show();
 

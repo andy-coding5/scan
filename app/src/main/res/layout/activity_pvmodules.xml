@@ -24,7 +24,7 @@
                 android:id="@+id/input_srno"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Enter PV Module number"
+                android:hint="Enter PV Module serial number"
                 android:imeOptions="actionNext"
                 android:inputType="textEmailAddress"
                 android:singleLine="true" />

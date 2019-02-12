@@ -153,7 +153,7 @@ public class Hpmotor extends AppCompatActivity {
     }
 
     private void check_first() {
-        if (!globalValues.getHpmotorsrno().equals("")) {
+        if (!"".equals(globalValues.getHpmotorsrno())) {
             srno_textview.setText(globalValues.getHpmotorsrno());
         }
         if (!globalValues.getHpmotorimage().equals("")) {
@@ -326,7 +326,7 @@ public class Hpmotor extends AppCompatActivity {
 
         //CALL
         Call<UpdateDetails> call = api.uploadHpmotorInfo(globalValues.APIKEY, "Token " + pref.getString("token", null),
-                image_file_to_upload, RequestBody.create(MediaType.parse("text/plain"), srno_textview.getText().toString()), globalValues.getID());
+                image_file_to_upload, RequestBody.create(MediaType.parse("text/plain"), srno_textview.getText().toString()), RequestBody.create(MediaType.parse("text/plain"), "Android"), globalValues.getID());
 
         progressDialog.show();
 

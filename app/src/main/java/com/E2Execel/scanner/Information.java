@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 public class Information extends AppCompatActivity {
 
-    private TextView t_v_name, t_v_mobile, t_v_address, t_v_village, t_v_town, t_v_district, t_v_state;
+    private TextView t_v_name, t_v_mobile, t_v_address, t_v_village, t_v_city, t_v_district, t_v_state;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +37,7 @@ public class Information extends AppCompatActivity {
         t_v_mobile = findViewById(R.id.mobile);
         t_v_address = findViewById(R.id.address);
         t_v_village = findViewById(R.id.village);
-        t_v_town = findViewById(R.id.town);
+        t_v_city = findViewById(R.id.city);
         t_v_district = findViewById(R.id.district);
         t_v_state = findViewById(R.id.state);
 
@@ -47,7 +47,7 @@ public class Information extends AppCompatActivity {
         String mobile = i.getStringExtra("mobile");
         String address = i.getStringExtra("address");
         String village = i.getStringExtra("village");
-        String town = i.getStringExtra("town");
+        String city = i.getStringExtra("city");
         String district = i.getStringExtra("district");
         String state = i.getStringExtra("state");
 
@@ -55,7 +55,7 @@ public class Information extends AppCompatActivity {
         t_v_mobile.setText(mobile);
         t_v_address.setText(address);
         t_v_village.setText(village);
-        t_v_town.setText(town);
+        t_v_city.setText(city);
         t_v_district.setText(district);
         t_v_state.setText(state);
 

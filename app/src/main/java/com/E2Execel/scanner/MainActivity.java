@@ -1,7 +1,9 @@
 package com.E2Execel.scanner;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -54,13 +56,40 @@ public class MainActivity extends AppCompatActivity {
         View view = getSupportActionBar().getCustomView();
 
         Button logout_button = view.findViewById(R.id.action_bar_logout);
+
+
         logout_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                editor.clear();
-                editor.commit();
-                startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                finishAffinity();
+
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
+
+
+                // Setting Dialog Message
+                alertDialog.setMessage("Are you sure you want to Logout?");
+
+
+                // Setting Positive "Yes" Button
+                alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        editor.clear();
+                        editor.commit();
+                        startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                        finishAffinity();
+                    }
+                });
+
+                // Setting Negative "NO" Button
+                alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.cancel();
+                    }
+                });
+
+                // Showing Alert Message
+                alertDialog.show();
             }
         });
 

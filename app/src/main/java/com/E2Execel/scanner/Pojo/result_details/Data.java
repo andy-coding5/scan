@@ -23,9 +23,9 @@ public class Data {
     @SerializedName("village")
     @Expose
     private String village;
-    @SerializedName("town")
+    @SerializedName("city")
     @Expose
-    private String town;
+    private String city;
     @SerializedName("district")
     @Expose
     private String district;
@@ -105,12 +105,12 @@ public class Data {
         this.village = village;
     }
 
-    public String getTown() {
-        return town;
+    public String getCity() {
+        return city;
     }
 
-    public void setTown(String town) {
-        this.town = town;
+    public void setCity(String city) {
+        this.city = city;
     }
 
     public String getDistrict() {

@@ -23,14 +23,14 @@
             android:layout_height="match_parent"
             android:layout_gravity="end"
             android:layout_marginTop="6dp"
-            android:layout_marginRight="10dp"
+
             android:layout_marginBottom="4dp"
-            android:background="@color/blue"
+            android:background="@color/zxing_transparent"
             android:text="Logout"
             style="@style/Base.Widget.AppCompat.Button"
             android:textAllCaps="false"
-            android:textColor="#fff"
-            android:textSize="20sp" />
+            android:textColor="@color/blue"
+            android:textSize="18sp" />
 
         <!-- This is a centered title -->
 

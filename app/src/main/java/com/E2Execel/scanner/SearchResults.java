@@ -170,7 +170,7 @@ public class SearchResults extends AppCompatActivity {
                                 i.putExtra("mobile", data.getMobile());
                                 i.putExtra("address", data.getAddress());
                                 i.putExtra("village", data.getVillage());
-                                i.putExtra("town", data.getTown());
+                                i.putExtra("city", data.getCity());
                                 i.putExtra("district", data.getDistrict());
                                 i.putExtra("state", data.getState());
 
