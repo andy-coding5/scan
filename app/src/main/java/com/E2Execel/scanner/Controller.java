@@ -158,9 +158,9 @@ public class Controller extends AppCompatActivity {
             srno_textview.setText(globalValues.getControllersrno());
         }
         if (!globalValues.getControllerimage().equals("")) {
-            Glide.with(this).load("http://192.168.1.6:8000" + globalValues.getControllerimage()).into(imageview);
+            Glide.with(this).load("http://192.168.0.110:8000" + globalValues.getControllerimage()).into(imageview);
             IMAGE_SET = 1;
-            Log.v("image_set", "http://192.168.1.6:8000" + globalValues.getControllerimage());
+            Log.v("image_set", "http://192.168.0.110:8000" + globalValues.getControllerimage());
         }
 
     }

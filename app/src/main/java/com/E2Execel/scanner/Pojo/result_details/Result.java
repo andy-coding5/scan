@@ -1,9 +1,10 @@
 package com.E2Execel.scanner.Pojo.result_details;
 
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Results {
+public class Result {
 
     @SerializedName("status")
     @Expose
@@ -38,5 +39,4 @@ public class Results {
     public void setData(Data data) {
         this.data = data;
     }
-
 }

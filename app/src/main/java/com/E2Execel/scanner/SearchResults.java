@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +18,7 @@ import android.widget.Toast;
 
 import com.E2Execel.scanner.Pojo.login_details.Login;
 import com.E2Execel.scanner.Pojo.result_details.Data;
-import com.E2Execel.scanner.Pojo.result_details.Results;
+import com.E2Execel.scanner.Pojo.result_details.Result;
 import com.E2Execel.scanner.Pojo.search_details.Datum;
 import com.E2Execel.scanner.Retrofit.ApiService;
 import com.E2Execel.scanner.Retrofit.RetroClient;
@@ -140,12 +139,12 @@ public class SearchResults extends AppCompatActivity {
                     Toast.makeText(context, thisDatum.getName(), Toast.LENGTH_LONG).show();
                     globalValues.setID(thisDatum.getId().toString());
 
-                    Call<Results> call = api.getResultsJson(globalValues.APIKEY, "Token " + pref.getString("token", null), globalValues.getID());
+                    Call<Result> call = api.getResultsJson(globalValues.APIKEY, "Token " + pref.getString("token", null), globalValues.getID());
                     progressDialog.show();
 
-                    call.enqueue(new Callback<Results>() {
+                    call.enqueue(new Callback<Result>() {
                         @Override
-                        public void onResponse(Call<Results> call, Response<Results> response) {
+                        public void onResponse(Call<Result> call, Response<Result> response) {
                             progressDialog.dismiss();
                             if (response.isSuccessful()) {
 
@@ -154,8 +153,14 @@ public class SearchResults extends AppCompatActivity {
                                 /*set some values in global class, required in nest 3 activities
                                  *
                                  */
-                                globalValues.setPvmodulesrno(data.getPvmodulesrno());
-                                globalValues.setPvmoduleimage(data.getPvmoduleimage());
+                                //getting the size of pv module lst
+                                String size = String.valueOf(response.body().getData().getPvmodule().size());
+                                globalValues.setPvmodule(data.getPvmodule());
+
+                                globalValues.setID(data.getId().toString());
+
+                                globalValues.setPumpsrno(data.getPumpsrno());
+                                globalValues.setPumpimage(data.getPumpimage());
                                 globalValues.setControllersrno(data.getControllersrno());
                                 globalValues.setControllerimage(data.getControllerimage());
                                 globalValues.setHpmotorsrno(data.getHpmotorsrno());
@@ -166,9 +171,16 @@ public class SearchResults extends AppCompatActivity {
 
                                 //necessary values to be set in next activity
                                 Intent i = new Intent(SearchResults.this, Information.class);
+                                i.putExtra("size", size);
+                                i.putExtra("srno", data.getSrno());
                                 i.putExtra("name", data.getName());
                                 i.putExtra("mobile", data.getMobile());
-                                i.putExtra("address", data.getAddress());
+                                i.putExtra("aadhar", data.getAadhar());
+                                i.putExtra("photo", data.getPhoto());
+
+                                i.putExtra("address1", data.getAddressLine1());
+                                i.putExtra("address2", data.getAddressLine2());
+                                i.putExtra("zipcode", data.getZipcode());
                                 i.putExtra("village", data.getVillage());
                                 i.putExtra("city", data.getCity());
                                 i.putExtra("district", data.getDistrict());
@@ -197,7 +209,7 @@ public class SearchResults extends AppCompatActivity {
                         }
 
                         @Override
-                        public void onFailure(Call<Results> call, Throwable t) {
+                        public void onFailure(Call<Result> call, Throwable t) {
                             progressDialog.dismiss();
                             Toast.makeText(SearchResults.this, "Please Check Internet Connection", Toast.LENGTH_SHORT).show();
                         }

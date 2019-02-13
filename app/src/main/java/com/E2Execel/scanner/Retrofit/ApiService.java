@@ -1,7 +1,7 @@
 package com.E2Execel.scanner.Retrofit;
 
 import com.E2Execel.scanner.Pojo.login_details.Login;
-import com.E2Execel.scanner.Pojo.result_details.Results;
+import com.E2Execel.scanner.Pojo.result_details.Result;
 import com.E2Execel.scanner.Pojo.search_details.Search;
 import com.E2Execel.scanner.Pojo.update_details.UpdateDetails;
 
@@ -38,7 +38,7 @@ public interface ApiService {
 
 
     @GET("panel/api/v1/info/{path}")
-    Call<Results> getResultsJson(@Header("APIKEY") String APIKEY, @Header("Authorization") String Authorization, @Path("path") String path);
+    Call<Result> getResultsJson(@Header("APIKEY") String APIKEY, @Header("Authorization") String Authorization, @Path("path") String path);
 
     //for PvModule
     @Multipart
@@ -46,6 +46,15 @@ public interface ApiService {
     Call<UpdateDetails> uploadPvmoduleInfo(@Header("APIKEY") String APIKEY, @Header("Authorization") String Authorization,
                                            @Part MultipartBody.Part file1, @Part("pvmodulesrno") RequestBody pvmodulesrno,
                                            @Part("Source") RequestBody Source, @Path("path") String path);
+
+
+    //for Installation info
+    @Multipart
+    @POST("panel/api/v1/update/{path}")
+    Call<UpdateDetails> uploadPumpInfo(@Header("APIKEY") String APIKEY, @Header("Authorization") String Authorization,
+                                       @Part MultipartBody.Part file1, @Part("pumpsrno") RequestBody pumpsrno,
+                                       @Part("Source") RequestBody Source, @Path("path") String path);
+
 
     //for Controler Info
     @Multipart

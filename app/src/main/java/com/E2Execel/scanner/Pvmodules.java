@@ -94,7 +94,7 @@ public class Pvmodules extends AppCompatActivity {
         View view = getSupportActionBar().getCustomView();
 
         TextView t = view.findViewById(R.id.title);
-        t.setText("PV Modules");       //title of the screen ... in custom action bar
+        t.setText("PV Modules");                            //title of the screen ... in custom action bar
 
         ImageButton imageButton = (ImageButton) view.findViewById(R.id.action_bar_back);
         imageButton.setOnClickListener(new View.OnClickListener() {
@@ -192,14 +192,15 @@ public class Pvmodules extends AppCompatActivity {
     }
 
     private void check_first() {
-        if (!"".equals(globalValues.getPvmodulesrno())) {
+     /*   if (!"".equals(globalValues.getPvmodulesrno())) {
             srno_textview.setText(globalValues.getPvmodulesrno());
         }
         if (!globalValues.getPvmoduleimage().equals("")) {
-            Glide.with(this).load("http://192.168.1.6:8000" + globalValues.getPvmoduleimage()).into(imageview);
+            Glide.with(this).load("http://192.168.0.110:8000" + globalValues.getPvmoduleimage()).into(imageview);
             IMAGE_SET = 1;
-            Log.v("image_set", "http://192.168.1.6:8000" + globalValues.getPvmoduleimage());
+            Log.v("image_set", "http://192.168.0.110:8000" + globalValues.getPvmoduleimage());
         }
+        */
 
     }
 

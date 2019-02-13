@@ -1,12 +1,34 @@
 package com.E2Execel.scanner.global;
 
-public  class globalValues {
+import com.E2Execel.scanner.Pojo.result_details.Pvmodule;
+
+import java.util.List;
+
+public class globalValues {
     public static String APIKEY = "931d2c3421e9499098676ac0122aaca1";
     private static String ID = "";
-    private static String pvmodulesrno = "";
-    private static String pvmoduleimage = "";
+    private static List<Pvmodule> pvmodule;
     private static String controllersrno = "";
     private static String controllerimage = "";
+    private static String pumpsrno = "";
+    private static String pumpimage = "";
+
+    public static String getPumpsrno() {
+        return pumpsrno;
+    }
+
+    public static void setPumpsrno(String pumpsrno) {
+        globalValues.pumpsrno = pumpsrno;
+    }
+
+    public static String getPumpimage() {
+        return pumpimage;
+    }
+
+    public static void setPumpimage(String pumpimage) {
+        globalValues.pumpimage = pumpimage;
+    }
+
     private static String hpmotorsrno = "";
     private static String hpmotorimage = "";
     private static String installationimage = "";
@@ -21,20 +43,12 @@ public  class globalValues {
     }
 
 
-    public static String getPvmodulesrno() {
-        return pvmodulesrno;
+    public static List<Pvmodule> getPvmodule() {
+        return pvmodule;
     }
 
-    public static String getPvmoduleimage() {
-        return pvmoduleimage;
-    }
-
-    public static void setPvmoduleimage(String pvmoduleimage) {
-        globalValues.pvmoduleimage = pvmoduleimage;
-    }
-
-    public static void setPvmodulesrno(String pvmodulesrno) {
-        globalValues.pvmodulesrno = pvmodulesrno;
+    public static void setPvmodule(List<Pvmodule> pvmodule) {
+        globalValues.pvmodule = pvmodule;
     }
 
     public static String getControllersrno() {

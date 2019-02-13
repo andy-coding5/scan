@@ -1,5 +1,8 @@
 package com.E2Execel.scanner.Pojo.result_details;
 
+
+import java.util.List;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -17,9 +20,21 @@ public class Data {
     @SerializedName("mobile")
     @Expose
     private String mobile;
-    @SerializedName("address")
+    @SerializedName("aadhar")
     @Expose
-    private String address;
+    private String aadhar;
+    @SerializedName("photo")
+    @Expose
+    private String photo;
+    @SerializedName("address_line_1")
+    @Expose
+    private String addressLine1;
+    @SerializedName("address_line_2")
+    @Expose
+    private String addressLine2;
+    @SerializedName("zipcode")
+    @Expose
+    private String zipcode;
     @SerializedName("village")
     @Expose
     private String village;
@@ -32,12 +47,12 @@ public class Data {
     @SerializedName("state")
     @Expose
     private String state;
-    @SerializedName("pvmodulesrno")
+    @SerializedName("pumpsrno")
     @Expose
-    private String pvmodulesrno;
-    @SerializedName("pvmoduleimage")
+    private String pumpsrno;
+    @SerializedName("pumpimage")
     @Expose
-    private String pvmoduleimage;
+    private String pumpimage;
     @SerializedName("controllersrno")
     @Expose
     private String controllersrno;
@@ -56,6 +71,9 @@ public class Data {
     @SerializedName("installationstatus")
     @Expose
     private String installationstatus;
+    @SerializedName("pvmodule")
+    @Expose
+    private List<Pvmodule> pvmodule = null;
 
     public Integer getId() {
         return id;
@@ -89,12 +107,44 @@ public class Data {
         this.mobile = mobile;
     }
 
-    public String getAddress() {
-        return address;
+    public String getAadhar() {
+        return aadhar;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setAadhar(String aadhar) {
+        this.aadhar = aadhar;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
+    public String getAddressLine1() {
+        return addressLine1;
+    }
+
+    public void setAddressLine1(String addressLine1) {
+        this.addressLine1 = addressLine1;
+    }
+
+    public String getAddressLine2() {
+        return addressLine2;
+    }
+
+    public void setAddressLine2(String addressLine2) {
+        this.addressLine2 = addressLine2;
+    }
+
+    public String getZipcode() {
+        return zipcode;
+    }
+
+    public void setZipcode(String zipcode) {
+        this.zipcode = zipcode;
     }
 
     public String getVillage() {
@@ -129,20 +179,20 @@ public class Data {
         this.state = state;
     }
 
-    public String getPvmodulesrno() {
-        return pvmodulesrno;
+    public String getPumpsrno() {
+        return pumpsrno;
     }
 
-    public void setPvmodulesrno(String pvmodulesrno) {
-        this.pvmodulesrno = pvmodulesrno;
+    public void setPumpsrno(String pumpsrno) {
+        this.pumpsrno = pumpsrno;
     }
 
-    public String getPvmoduleimage() {
-        return pvmoduleimage;
+    public String getPumpimage() {
+        return pumpimage;
     }
 
-    public void setPvmoduleimage(String pvmoduleimage) {
-        this.pvmoduleimage = pvmoduleimage;
+    public void setPumpimage(String pumpimage) {
+        this.pumpimage = pumpimage;
     }
 
     public String getControllersrno() {
@@ -192,4 +242,13 @@ public class Data {
     public void setInstallationstatus(String installationstatus) {
         this.installationstatus = installationstatus;
     }
+
+    public List<Pvmodule> getPvmodule() {
+        return pvmodule;
+    }
+
+    public void setPvmodule(List<Pvmodule> pvmodule) {
+        this.pvmodule = pvmodule;
+    }
+
 }

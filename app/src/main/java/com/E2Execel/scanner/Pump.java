@@ -45,7 +45,9 @@ import retrofit2.Response;
 
 import static com.E2Execel.scanner.LoginActivity.Build_alert_dialog;
 
-public class Hpmotor extends AppCompatActivity {
+public class Pump extends AppCompatActivity {
+
+
     Activity activity;
     TextView srno_textview;
     private ImageView imageview;
@@ -67,10 +69,11 @@ public class Hpmotor extends AppCompatActivity {
 
     private static int IMAGE_SET = 0;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_hpmotor);
+        setContentView(R.layout.activity_pump);
 
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setDisplayShowCustomEnabled(true);
@@ -78,7 +81,7 @@ public class Hpmotor extends AppCompatActivity {
         View view = getSupportActionBar().getCustomView();
 
         TextView t = view.findViewById(R.id.title);
-        t.setText("Hp Motor");       //title of the screen ... in custom action bar
+        t.setText("Pump");       //title of the screen ... in custom action bar
 
         ImageButton imageButton = (ImageButton) view.findViewById(R.id.action_bar_back);
         imageButton.setOnClickListener(new View.OnClickListener() {
@@ -98,7 +101,7 @@ public class Hpmotor extends AppCompatActivity {
         editor = pref.edit();
 
         // Set up progress before call
-        progressDialog = new ProgressDialog(Hpmotor.this);
+        progressDialog = new ProgressDialog(Pump.this);
         progressDialog.setMax(100);
         progressDialog.setMessage("Wait");
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -106,7 +109,6 @@ public class Hpmotor extends AppCompatActivity {
         update_token();
 
         check_first();
-
     }
 
     public void update_token() {
@@ -124,7 +126,7 @@ public class Hpmotor extends AppCompatActivity {
             public void onResponse(Call<Login> call, Response<Login> response) {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
-                    Toast.makeText(Hpmotor.this, "new token: " + "token " + response.body().getData().getToken(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Pump.this, "new token: " + "token " + response.body().getData().getToken(), Toast.LENGTH_SHORT).show();
                     editor.putString("token", response.body().getData().getToken());
                     editor.commit();
 
@@ -145,7 +147,7 @@ public class Hpmotor extends AppCompatActivity {
             @Override
             public void onFailure(Call<Login> call, Throwable t) {
                 progressDialog.dismiss();
-                Build_alert_dialog(Hpmotor.this, "Connection Error", "Please Check You Internet Connection");
+                Build_alert_dialog(Pump.this, "Connection Error", "Please Check You Internet Connection");
             }
         });
 
@@ -153,13 +155,13 @@ public class Hpmotor extends AppCompatActivity {
     }
 
     private void check_first() {
-        if (!"".equals(globalValues.getHpmotorsrno())) {
-            srno_textview.setText(globalValues.getHpmotorsrno());
+        if (!"".equals(globalValues.getPumpsrno())) {
+            srno_textview.setText(globalValues.getControllersrno());
         }
-        if (!globalValues.getHpmotorimage().equals("")) {
-            Glide.with(this).load("http://192.168.0.110:8000" + globalValues.getHpmotorimage()).into(imageview);
+        if (!globalValues.getPumpimage().equals("")) {
+            Glide.with(this).load("http://192.168.0.110:8000" + globalValues.getPumpimage()).into(imageview);
             IMAGE_SET = 1;
-            Log.v("image_set", "http://192.168.0.110:800" + globalValues.getHpmotorimage());
+            Log.v("image_set", "http://192.168.0.110:8000" + globalValues.getPumpimage());
         }
 
     }
@@ -277,12 +279,12 @@ public class Hpmotor extends AppCompatActivity {
 
                         File f = new File(FilePathStr);
 
-                        image_file_to_upload = MultipartBody.Part.createFormData("hpmotorimage", f.getName(), RequestBody.create(MediaType.parse("image/*"), f));
+                        image_file_to_upload = MultipartBody.Part.createFormData("pumpimage", f.getName(), RequestBody.create(MediaType.parse("image/*"), f));
 
 
                     } catch (IOException e) {
                         e.printStackTrace();
-                        Toast.makeText(Hpmotor.this, "Failed!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Pump.this, "Failed!", Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -298,7 +300,7 @@ public class Hpmotor extends AppCompatActivity {
                 File file = new File(camUri.getPath());
 
 
-                image_file_to_upload = MultipartBody.Part.createFormData("hpmotorimage", file.getName(), RequestBody.create(MediaType.parse("image/*"), file));
+                image_file_to_upload = MultipartBody.Part.createFormData("pumpimage", file.getName(), RequestBody.create(MediaType.parse("image/*"), file));
 
 
             }
@@ -325,7 +327,7 @@ public class Hpmotor extends AppCompatActivity {
 
 
         //CALL
-        Call<UpdateDetails> call = api.uploadHpmotorInfo(globalValues.APIKEY, "Token " + pref.getString("token", null),
+        Call<UpdateDetails> call = api.uploadPumpInfo(globalValues.APIKEY, "Token " + pref.getString("token", null),
                 image_file_to_upload, RequestBody.create(MediaType.parse("text/plain"), srno_textview.getText().toString()), RequestBody.create(MediaType.parse("text/plain"), "Android"), globalValues.getID());
 
         progressDialog.show();
@@ -337,10 +339,11 @@ public class Hpmotor extends AppCompatActivity {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     if (response.body().getStatus().equals("Success")) {
-                        Toast.makeText(Hpmotor.this, "successfully uploaded", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(Hpmotor.this, Installation.class));
+                        Toast.makeText(Pump.this, "successfully uploaded", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(Pump.this, Controller.class));
 
                     }
+
 
                 } else {
 
@@ -348,7 +351,7 @@ public class Hpmotor extends AppCompatActivity {
                         JSONObject jObjError = new JSONObject(response.errorBody().string());
                         String status = jObjError.getString("message");
                         String error_msg = jObjError.getJSONObject("data").getString("errors");
-                        Build_alert_dialog(Hpmotor.this, status, error_msg);
+                        Build_alert_dialog(Pump.this, status, error_msg);
 
                     } catch (Exception e) {
                         Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
@@ -361,10 +364,12 @@ public class Hpmotor extends AppCompatActivity {
             public void onFailure(Call<UpdateDetails> call, Throwable t) {
 
                 progressDialog.dismiss();
-                Build_alert_dialog(Hpmotor.this, "Connection Error", "Please Check You Internet Connection");
+                Build_alert_dialog(Pump.this, "Connection Error", "Please Check You Internet Connection");
 
             }
         });
 
     }
+
+
 }
