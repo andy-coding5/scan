@@ -138,6 +138,7 @@ public class SearchResults extends AppCompatActivity {
                 public void onClick(View view) {
                     Toast.makeText(context, thisDatum.getName(), Toast.LENGTH_LONG).show();
                     globalValues.setID(thisDatum.getId().toString());
+                    startActivity(new Intent(SearchResults.this, Information.class));
                 }
             });
 
