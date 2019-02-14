@@ -115,6 +115,20 @@ public class Information extends AppCompatActivity {
         t_v_district = findViewById(R.id.district);
         t_v_state = findViewById(R.id.state);
 
+
+        api = RetroClient.getApiService();
+        pref = getSharedPreferences("SCANNER_PREF", MODE_PRIVATE);
+        editor = pref.edit();
+
+
+        // Set up progress before call
+        progressDialog = new ProgressDialog(Information.this);
+        progressDialog.setMax(100);
+        progressDialog.setMessage("Wait");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+
+        update_token();
+
         Call<Result> call = api.getResultsJson(globalValues.APIKEY, "Token " + pref.getString("token", null), globalValues.getID());
         progressDialog.show();
 
@@ -185,18 +199,6 @@ public class Information extends AppCompatActivity {
             }
         });
 
-
-        api = RetroClient.getApiService();
-        pref = getSharedPreferences("SCANNER_PREF", MODE_PRIVATE);
-        editor = pref.edit();
-
-        // Set up progress before call
-        progressDialog = new ProgressDialog(Information.this);
-        progressDialog.setMax(100);
-        progressDialog.setMessage("Wait");
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-
-        update_token();
 
     }
 
@@ -339,28 +341,42 @@ public class Information extends AppCompatActivity {
     }
 
     private void showPictureDialog() {
-        if (checkAndRequestPermission() || success_all_permission == 1) {
-            AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
-            pictureDialog.setTitle("Select Action");
-            String[] pictureDialogItems = {
-                    "Select photo from gallery",
-                    "Capture photo from camera"};
-            pictureDialog.setItems(pictureDialogItems,
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            switch (which) {
-                                case 0:
+
+        AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
+        pictureDialog.setTitle("Select Action");
+        String[] pictureDialogItems = {
+                "Select photo from gallery",
+                "Capture photo from camera"};
+        pictureDialog.setItems(pictureDialogItems,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case 0:
+                                if(!checkAndRequestPermission()){
+                                    Build_alert_dialog(Information.this, "Permission request", "Please Allow to access ");
+                                }
+                                else{
                                     choosePhotoFromGallary();
-                                    break;
-                                case 1:
+                                }
+
+                                break;
+                            case 1:
+                                if(!checkAndRequestPermission()){
+                                    Build_alert_dialog(Information.this, "Permission request", "Please Allow to access ");
+                                }
+                                else{
                                     takePhotoFromCamera();
-                                    break;
-                            }
+                                }
+
+                                break;
                         }
-                    });
-            pictureDialog.show();
-        }
+                    }
+                });
+        pictureDialog.show();
+
+
+
 
     }
 
