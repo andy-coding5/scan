@@ -263,6 +263,7 @@ public class Information extends AppCompatActivity {
                         if (response.body().getStatus().equals("Success")) {
                             Toast.makeText(Information.this, "successfully uploaded", Toast.LENGTH_SHORT).show();
 
+                            IMAGE_SET = 0;
                             if (size == 0) {
                                 Intent i = new Intent(Information.this, Pvmodules.class);
 
@@ -341,6 +342,8 @@ public class Information extends AppCompatActivity {
     }
 
     private void showPictureDialog() {
+        if (checkAndRequestPermission()) {
+        }
 
         AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
         pictureDialog.setTitle("Select Action");
@@ -353,19 +356,17 @@ public class Information extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
                             case 0:
-                                if(!checkAndRequestPermission()){
+                                if (!checkAndRequestPermission()) {
                                     Build_alert_dialog(Information.this, "Permission request", "Please Allow to access ");
-                                }
-                                else{
+                                } else {
                                     choosePhotoFromGallary();
                                 }
 
                                 break;
                             case 1:
-                                if(!checkAndRequestPermission()){
+                                if (!checkAndRequestPermission()) {
                                     Build_alert_dialog(Information.this, "Permission request", "Please Allow to access ");
-                                }
-                                else{
+                                } else {
                                     takePhotoFromCamera();
                                 }
 
@@ -374,8 +375,6 @@ public class Information extends AppCompatActivity {
                     }
                 });
         pictureDialog.show();
-
-
 
 
     }
@@ -481,6 +480,87 @@ public class Information extends AppCompatActivity {
             }
 
             // Toast.makeText(this, "complete", Toast.LENGTH_SHORT).show();
+
+        }
+
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+
+        if (IMAGE_SET == 1) {
+
+        } else {
+            Call<Result> call = api.getResultsJson(globalValues.APIKEY, "Token " + pref.getString("token", null), globalValues.getID());
+            progressDialog.show();
+
+            call.enqueue(new Callback<Result>() {
+                @Override
+                public void onResponse(Call<Result> call, Response<Result> response) {
+                    progressDialog.dismiss();
+                    if (response.isSuccessful()) {
+
+                        Data data = response.body().getData();
+
+                        /*set some values in global class, required in nest 3 activities
+                         *
+                         */
+                        //getting the size of pv module lst
+                        size = response.body().getData().getPvmodule().size();
+                        globalValues.setPvmodule(data.getPvmodule());
+
+                        globalValues.setID(data.getId().toString());
+
+                        globalValues.setPumpsrno(data.getPumpsrno());
+                        globalValues.setPumpimage(data.getPumpimage());
+                        globalValues.setControllersrno(data.getControllersrno());
+                        globalValues.setControllerimage(data.getControllerimage());
+                        globalValues.setHpmotorsrno(data.getHpmotorsrno());
+                        globalValues.setHpmotorimage(data.getHpmotorimage());
+                        globalValues.setInstallationstatus(data.getInstallationstatus());
+                        globalValues.setInstallationimage(data.getInstallationimage());
+
+
+                        Glide.with(Information.this).load("http://192.168.0.110:8000" + data.getPhoto()).into(imageview_photo);
+                        t_v_srno.setText(data.getSrno());
+                        t_v_name.setText(data.getName());
+                        t_v_mobile.setText(data.getMobile());
+                        t_v_aadhar.setText(data.getAadhar());
+                        t_v_address1.setText(data.getAddressLine1());
+                        t_v_address2.setText(data.getAddressLine2());
+                        t_v_village.setText(data.getVillage());
+                        t_v_city.setText(data.getCity());
+                        t_v_zip.setText(data.getZipcode());
+                        t_v_district.setText(data.getDistrict());
+                        t_v_state.setText(data.getState());
+
+
+                    } else {
+                        update_token();
+
+                        Toast.makeText(Information.this, "response not received", Toast.LENGTH_SHORT).show();
+                        try {
+                            JSONObject jObjError = new JSONObject(response.errorBody().string());
+                            /* String status = jObjError.getString("detail");
+                             */
+                            Toast.makeText(getApplicationContext(), jObjError.toString(), Toast.LENGTH_LONG).show();
+
+                            //Build_alert_dialog(getApplicationContext(), "Error", status);
+
+                        } catch (Exception e) {
+                            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<Result> call, Throwable t) {
+                    progressDialog.dismiss();
+                    Toast.makeText(Information.this, "Please Check Internet Connection", Toast.LENGTH_SHORT).show();
+                }
+            });
 
         }
 

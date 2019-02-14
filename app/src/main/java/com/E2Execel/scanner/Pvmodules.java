@@ -413,7 +413,7 @@ public class Pvmodules extends AppCompatActivity {
 
         //  Log.v("Comparison", old_sr_no + ", " + srno_textview.getText()+"\n"+"image_set=");
         String id_param = id;
-        if (srno_textview.getText().equals("") && IMAGE_SET == 1) {
+        if ("".equals(srno_textview.getText().toString().trim()) && IMAGE_SET == 1) {
             Build_alert_dialog(Pvmodules.this, "invalid input", "please input Sr No. ");
         } else if ("".equals(srno_textview.getText().toString().trim()) && IMAGE_SET == 0) {
             startActivity(new Intent(Pvmodules.this, Pump.class));
@@ -448,6 +448,7 @@ public class Pvmodules extends AppCompatActivity {
                     if (response.isSuccessful()) {
                         if (response.body().getStatus().equals("Success")) {
                             Toast.makeText(Pvmodules.this, "successfully uploaded", Toast.LENGTH_SHORT).show();
+                            IMAGE_SET = 0;
                             startActivity(new Intent(Pvmodules.this, Pump.class));
 
                         }
@@ -482,11 +483,9 @@ public class Pvmodules extends AppCompatActivity {
 
     public void add_new_pvmodule(View view) {
         //CALL
-        if (srno_textview.equals("") && IMAGE_SET == 1) {
-            Build_alert_dialog(Pvmodules.this, "invalid input", "please input Sr No. ");
-        }
+
         String id_param = id;
-        if (srno_textview.getText().equals("") && IMAGE_SET == 1) {
+        if ("".equals(srno_textview.getText().toString().trim()) && IMAGE_SET == 1) {
             Build_alert_dialog(Pvmodules.this, "invalid input", "please input Sr No. ");
         } else if ("".equals(srno_textview.getText().toString().trim()) && IMAGE_SET == 0) {
             startActivity(new Intent(Pvmodules.this, Pump.class));
@@ -523,6 +522,8 @@ public class Pvmodules extends AppCompatActivity {
                             Toast.makeText(Pvmodules.this, "successfully uploaded", Toast.LENGTH_SHORT).show();
                             srno_textview.setText("");
                             imageview.setImageDrawable(getResources().getDrawable(R.drawable.upload_photo));
+                            IMAGE_SET = 0;
+                            id = null;
 
 
                         }
