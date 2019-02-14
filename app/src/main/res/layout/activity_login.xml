@@ -65,7 +65,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="65dp"
-                android:background="@color/blue"
+                android:background="@drawable/blue_button_background"
                 android:onClick="login_process"
                 android:text="Login"
                 android:textAllCaps="false"

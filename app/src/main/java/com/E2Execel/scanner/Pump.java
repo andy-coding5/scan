@@ -155,13 +155,20 @@ public class Pump extends AppCompatActivity {
     }
 
     private void check_first() {
-        if (!"".equals(globalValues.getPumpsrno())) {
+        if (globalValues.getPumpsrno() != null) {
             srno_textview.setText(globalValues.getControllersrno());
         }
-        if (!globalValues.getPumpimage().equals("")) {
-            Glide.with(this).load("http://192.168.0.110:8000" + globalValues.getPumpimage()).into(imageview);
-            IMAGE_SET = 1;
-            Log.v("image_set", "http://192.168.0.110:8000" + globalValues.getPumpimage());
+        if (globalValues.getPumpimage() != null) {
+            if ("".equals(globalValues.getPumpimage())) {
+                imageview.setImageDrawable(getResources().getDrawable(R.drawable.upload_photo));
+            } else {
+                Glide.with(this).load("http://192.168.0.110:8000" + globalValues.getPumpimage()).into(imageview);
+                IMAGE_SET = 1;
+                Log.v("image_set", "http://192.168.0.110:8000" + globalValues.getPumpimage());
+            }
+
+        } else {
+            imageview.setImageDrawable(getResources().getDrawable(R.drawable.upload_photo));
         }
 
     }

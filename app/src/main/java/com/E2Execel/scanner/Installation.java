@@ -167,15 +167,23 @@ public class Installation extends AppCompatActivity {
     }
 
     private void check_first() {
-        if (!"".equals(globalValues.getInstallationstatus())) {
+        if (globalValues.getInstallationstatus() != null) {
             status_tv.setText(globalValues.getInstallationstatus());
         }
 
 
-        if (!globalValues.getInstallationimage().equals("")) {
-            Glide.with(this).load("http://192.168.0.110:8000" + globalValues.getInstallationimage()).into(imageview);
-            IMAGE_SET = 1;
-            Log.v("image_set", "http://192.168.0.110:800" + globalValues.getInstallationimage());
+        if (globalValues.getInstallationimage() != null) {
+
+            if ("".equals(globalValues.getInstallationimage())) {
+                imageview.setImageDrawable(getResources().getDrawable(R.drawable.upload_photo));
+            } else {
+                Glide.with(this).load("http://192.168.0.110:8000" + globalValues.getInstallationimage()).into(imageview);
+                IMAGE_SET = 1;
+                Log.v("image_set", "http://192.168.0.110:800" + globalValues.getInstallationimage());
+            }
+
+        } else {
+            imageview.setImageDrawable(getResources().getDrawable(R.drawable.upload_photo));
         }
 
     }
@@ -360,7 +368,6 @@ public class Installation extends AppCompatActivity {
 
         dialog.show();
     }
-
 
     public void save_info(View view) {
         //CALL

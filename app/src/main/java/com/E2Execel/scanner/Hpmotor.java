@@ -153,13 +153,20 @@ public class Hpmotor extends AppCompatActivity {
     }
 
     private void check_first() {
-        if (!"".equals(globalValues.getHpmotorsrno())) {
+        if (globalValues.getHpmotorsrno() != null) {
             srno_textview.setText(globalValues.getHpmotorsrno());
         }
-        if (!globalValues.getHpmotorimage().equals("")) {
-            Glide.with(this).load("http://192.168.0.110:8000" + globalValues.getHpmotorimage()).into(imageview);
-            IMAGE_SET = 1;
-            Log.v("image_set", "http://192.168.0.110:800" + globalValues.getHpmotorimage());
+        if (globalValues.getHpmotorimage() != null) {
+            if ("".equals(globalValues.getHpmotorimage())) {
+                imageview.setImageDrawable(getResources().getDrawable(R.drawable.upload_photo));
+            } else {
+                Glide.with(this).load("http://192.168.0.110:8000" + globalValues.getHpmotorimage()).into(imageview);
+                IMAGE_SET = 1;
+                Log.v("image_set", "http://192.168.0.110:800" + globalValues.getHpmotorimage());
+            }
+
+        } else {
+            imageview.setImageDrawable(getResources().getDrawable(R.drawable.upload_photo));
         }
 
     }

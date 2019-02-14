@@ -27,7 +27,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.E2Execel.scanner.Pojo.add_pv_module.AddPvModule;
 import com.E2Execel.scanner.Pojo.login_details.Login;
+import com.E2Execel.scanner.Pojo.result_details.Pvmodule;
 import com.E2Execel.scanner.Pojo.update_details.UpdateDetails;
 import com.E2Execel.scanner.Retrofit.ApiService;
 import com.E2Execel.scanner.Retrofit.RetroClient;
@@ -69,6 +71,7 @@ public class Pvmodules extends AppCompatActivity {
     String imageFilePath;
 
     private int GALLERY = 1, CAMERA = 2;
+    private String id = "not_init", pvmodulesrno = "", pvmoduleimage = "", old_sr_no = "";
 
 
     private ProgressDialog progressDialog;
@@ -82,6 +85,7 @@ public class Pvmodules extends AppCompatActivity {
 
     private final static int ALL_PERMISSIONS_RESULT = 1240;
     private static int IMAGE_SET = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,11 +125,12 @@ public class Pvmodules extends AppCompatActivity {
 
         update_token();
 
+        Intent i = getIntent();
+        id = i.getStringExtra("id");
+        pvmodulesrno = i.getStringExtra("pvmodulesrno");
+        old_sr_no = pvmodulesrno;
+        pvmoduleimage = i.getStringExtra("pvmoduleimage");
 
-        if (!checkAndRequestPermission()) {
-            //initApp();
-
-        }
         check_first();
 
     }
@@ -192,15 +197,23 @@ public class Pvmodules extends AppCompatActivity {
     }
 
     private void check_first() {
-     /*   if (!"".equals(globalValues.getPvmodulesrno())) {
-            srno_textview.setText(globalValues.getPvmodulesrno());
+        if (pvmodulesrno != null) {
+            srno_textview.setText(pvmodulesrno);
         }
-        if (!globalValues.getPvmoduleimage().equals("")) {
-            Glide.with(this).load("http://192.168.0.110:8000" + globalValues.getPvmoduleimage()).into(imageview);
-            IMAGE_SET = 1;
-            Log.v("image_set", "http://192.168.0.110:8000" + globalValues.getPvmoduleimage());
+        if (pvmoduleimage != null) {
+            if ("".equals(pvmoduleimage)) {
+                imageview.setImageDrawable(getResources().getDrawable(R.drawable.upload_photo));
+            } else {
+
+                Glide.with(this).load("http://192.168.0.110:8000" + pvmoduleimage).into(imageview);
+                IMAGE_SET = 1;
+                Log.v("image_set", "http://192.168.0.110:8000" + pvmoduleimage);
+            }
+
+        } else {
+            imageview.setImageDrawable(getResources().getDrawable(R.drawable.upload_photo));
         }
-        */
+
 
     }
 
@@ -220,27 +233,29 @@ public class Pvmodules extends AppCompatActivity {
     }
 
     private void showPictureDialog() {
-
-        AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
-        pictureDialog.setTitle("Select Action");
-        String[] pictureDialogItems = {
-                "Select photo from gallery",
-                "Capture photo from camera"};
-        pictureDialog.setItems(pictureDialogItems,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which) {
-                            case 0:
-                                choosePhotoFromGallary();
-                                break;
-                            case 1:
-                                takePhotoFromCamera();
-                                break;
+        if (checkAndRequestPermission()) {
+            AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
+            pictureDialog.setTitle("Select Action");
+            String[] pictureDialogItems = {
+                    "Select photo from gallery",
+                    "Capture photo from camera"};
+            pictureDialog.setItems(pictureDialogItems,
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which) {
+                                case 0:
+                                    choosePhotoFromGallary();
+                                    break;
+                                case 1:
+                                    takePhotoFromCamera();
+                                    break;
+                            }
                         }
-                    }
-                });
-        pictureDialog.show();
+                    });
+            pictureDialog.show();
+        }
+
     }
 
     private void choosePhotoFromGallary() {
@@ -317,7 +332,7 @@ public class Pvmodules extends AppCompatActivity {
 
                         File f = new File(FilePathStr);
 
-                        image_file_to_upload = MultipartBody.Part.createFormData("pvmoduleimage", f.getName(), RequestBody.create(MediaType.parse("image/*"), f));
+                        image_file_to_upload = MultipartBody.Part.createFormData("image", f.getName(), RequestBody.create(MediaType.parse("image/*"), f));
 
 
                     } catch (IOException e) {
@@ -338,7 +353,7 @@ public class Pvmodules extends AppCompatActivity {
                 File file = new File(camUri.getPath());
 
 
-                image_file_to_upload = MultipartBody.Part.createFormData("pvmoduleimage", file.getName(), RequestBody.create(MediaType.parse("image/*"), file));
+                image_file_to_upload = MultipartBody.Part.createFormData("image", file.getName(), RequestBody.create(MediaType.parse("image/*"), file));
 
 
             }
@@ -396,47 +411,146 @@ public class Pvmodules extends AppCompatActivity {
 
     public void next_activity(View view) {
 
+        //  Log.v("Comparison", old_sr_no + ", " + srno_textview.getText()+"\n"+"image_set=");
+        String id_param = id;
+        if (srno_textview.getText().equals("") && IMAGE_SET == 1) {
+            Build_alert_dialog(Pvmodules.this, "invalid input", "please input Sr No. ");
+        } else if ("".equals(srno_textview.getText().toString().trim()) && IMAGE_SET == 0) {
+            startActivity(new Intent(Pvmodules.this, Pump.class));
+        }
         //CALL
-        Call<UpdateDetails> call = api.uploadPvmoduleInfo(globalValues.APIKEY, "Token " + pref.getString("token", null),
-                image_file_to_upload, RequestBody.create(MediaType.parse("text/plain"), srno_textview.getText().toString()), RequestBody.create(MediaType.parse("text/plain"), "Android"), globalValues.getID());
+        else {
+            Call<AddPvModule> call;
+            if (id_param == null) {
+                //call method without ID
+                call = api.addPvModuleWithOutId(globalValues.APIKEY, "Token " + pref.getString("token", null),
+                        image_file_to_upload,
+                        RequestBody.create(MediaType.parse("text/plain"), srno_textview.getText().toString()),
+                        RequestBody.create(MediaType.parse("text/plain"), globalValues.getID()),
+                        RequestBody.create(MediaType.parse("text/plain"), "Android"));
 
-        progressDialog.show();
+            } else {
+                call = api.addPvModuleWithId(globalValues.APIKEY, "Token " + pref.getString("token", null),
+                        image_file_to_upload,
+                        RequestBody.create(MediaType.parse("text/plain"), srno_textview.getText().toString()),
+                        RequestBody.create(MediaType.parse("text/plain"), globalValues.getID()),
+                        RequestBody.create(MediaType.parse("text/plain"), id_param),
+                        RequestBody.create(MediaType.parse("text/plain"), "Android"));
+
+            }
+            progressDialog.show();
 
 
-        call.enqueue(new Callback<UpdateDetails>() {
-            @Override
-            public void onResponse(Call<UpdateDetails> call, Response<UpdateDetails> response) {
-                progressDialog.dismiss();
-                if (response.isSuccessful()) {
-                    if(response.body().getStatus().equals("Success")){
-                        Toast.makeText(Pvmodules.this, "successfully uploaded", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(Pvmodules.this, Controller.class));
+            call.enqueue(new Callback<AddPvModule>() {
+                @Override
+                public void onResponse(Call<AddPvModule> call, Response<AddPvModule> response) {
+                    progressDialog.dismiss();
+                    if (response.isSuccessful()) {
+                        if (response.body().getStatus().equals("Success")) {
+                            Toast.makeText(Pvmodules.this, "successfully uploaded", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(Pvmodules.this, Pump.class));
 
+                        }
+
+                    } else {
+
+                        try {
+                            JSONObject jObjError = new JSONObject(response.errorBody().string());
+                            String status = jObjError.getString("message");
+                            String error_msg = jObjError.getJSONObject("data").getString("error");
+                            Build_alert_dialog(Pvmodules.this, status, error_msg);
+
+                        } catch (Exception e) {
+                            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                        }
                     }
-
-                } else {
-
-                    try {
-                        JSONObject jObjError = new JSONObject(response.errorBody().string());
-                        String status = jObjError.getString("message");
-                        String error_msg = jObjError.getJSONObject("data").getString("errors");
-                        Build_alert_dialog(Pvmodules.this, status, error_msg);
-
-                    } catch (Exception e) {
-                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-                    }
+                    Log.v("upload", "success");
                 }
-                Log.v("upload", "success");
+
+                @Override
+                public void onFailure(Call<AddPvModule> call, Throwable t) {
+
+                    progressDialog.dismiss();
+                    Build_alert_dialog(Pvmodules.this, "Connection Error", "Please Check You Internet Connection");
+
+                }
+            });
+        }
+
+    }
+
+
+    public void add_new_pvmodule(View view) {
+        //CALL
+        if (srno_textview.equals("") && IMAGE_SET == 1) {
+            Build_alert_dialog(Pvmodules.this, "invalid input", "please input Sr No. ");
+        }
+        String id_param = id;
+        if (srno_textview.getText().equals("") && IMAGE_SET == 1) {
+            Build_alert_dialog(Pvmodules.this, "invalid input", "please input Sr No. ");
+        } else if ("".equals(srno_textview.getText().toString().trim()) && IMAGE_SET == 0) {
+            startActivity(new Intent(Pvmodules.this, Pump.class));
+        }
+        //CALL
+        else {
+            Call<AddPvModule> call;
+            if (id_param == null) {
+                //call method without ID
+                call = api.addPvModuleWithOutId(globalValues.APIKEY, "Token " + pref.getString("token", null),
+                        image_file_to_upload,
+                        RequestBody.create(MediaType.parse("text/plain"), srno_textview.getText().toString()),
+                        RequestBody.create(MediaType.parse("text/plain"), globalValues.getID()),
+                        RequestBody.create(MediaType.parse("text/plain"), "Android"));
+
+            } else {
+                call = api.addPvModuleWithId(globalValues.APIKEY, "Token " + pref.getString("token", null),
+                        image_file_to_upload,
+                        RequestBody.create(MediaType.parse("text/plain"), srno_textview.getText().toString()),
+                        RequestBody.create(MediaType.parse("text/plain"), globalValues.getID()),
+                        RequestBody.create(MediaType.parse("text/plain"), id_param),
+                        RequestBody.create(MediaType.parse("text/plain"), "Android"));
+
             }
+            progressDialog.show();
 
-            @Override
-            public void onFailure(Call<UpdateDetails> call, Throwable t) {
 
-                progressDialog.dismiss();
-                Build_alert_dialog(Pvmodules.this, "Connection Error", "Please Check You Internet Connection");
+            call.enqueue(new Callback<AddPvModule>() {
+                @Override
+                public void onResponse(Call<AddPvModule> call, Response<AddPvModule> response) {
+                    progressDialog.dismiss();
+                    if (response.isSuccessful()) {
+                        if (response.body().getStatus().equals("Success")) {
+                            Toast.makeText(Pvmodules.this, "successfully uploaded", Toast.LENGTH_SHORT).show();
+                            srno_textview.setText("");
+                            imageview.setImageDrawable(getResources().getDrawable(R.drawable.upload_photo));
 
-            }
-        });
+
+                        }
+
+                    } else {
+
+                        try {
+                            JSONObject jObjError = new JSONObject(response.errorBody().string());
+                            String status = jObjError.getString("message");
+                            String error_msg = jObjError.getJSONObject("data").getString("error");
+                            Build_alert_dialog(Pvmodules.this, status, error_msg);
+
+                        } catch (Exception e) {
+                            Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    }
+                    Log.v("upload", "success");
+                }
+
+                @Override
+                public void onFailure(Call<AddPvModule> call, Throwable t) {
+
+                    progressDialog.dismiss();
+                    Build_alert_dialog(Pvmodules.this, "Connection Error", "Please Check You Internet Connection");
+
+                }
+            });
+        }
 
     }
 }

@@ -25,7 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Enter Controller serial number"
-                android:imeOptions="actionNext"
+                android:imeOptions="actionDone"
                 android:inputType="textEmailAddress"
                 android:singleLine="true" />
 
@@ -37,13 +37,13 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
-            android:background="@color/blue"
+            android:background="@drawable/button_background"
             android:onClick="scan_code"
             android:paddingLeft="70dp"
             android:paddingRight="70dp"
             android:text="Scan Code"
             android:textAllCaps="false"
-            android:textColor="#FFF" />
+            android:textColor="#0e68af" />
 
         <ImageView
             android:id="@+id/iv"
@@ -61,13 +61,13 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
-            android:background="@color/blue"
+            android:background="@drawable/button_background"
             android:onClick="take_image"
             android:paddingLeft="70dp"
             android:paddingRight="70dp"
             android:text="Take Image"
             android:textAllCaps="false"
-            android:textColor="#FFF" />
+            android:textColor="#0e68af" />
     </LinearLayout>
 
     <Button
@@ -79,7 +79,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="25dp"
-        android:background="@color/blue"
+        android:background="@drawable/blue_button_background"
         android:paddingLeft="50dp"
         android:paddingRight="50dp"
         android:text="Next"

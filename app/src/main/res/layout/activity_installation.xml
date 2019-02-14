@@ -32,17 +32,26 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
-            android:background="@color/blue"
+            android:background="@drawable/button_background"
             android:onClick="take_image"
             android:paddingLeft="70dp"
             android:paddingRight="70dp"
-            android:text="Take Image"
+            android:text="Installtion Image"
             android:textAllCaps="false"
-            android:textColor="#FFF" />
-
+            android:textColor="#0e68af" />
 
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="100dp"
+            android:layout_marginBottom="-75dp"
+            android:paddingRight="5dp"
+            android:text="status"
+            android:textColor="#7e9fad"
+            android:textSize="12sp" />
 
+        <TextView
             android:id="@+id/status_textview"
             android:layout_width="match_parent"
             android:layout_height="45dp"
@@ -67,7 +76,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="25dp"
-        android:background="@color/blue"
+        android:background="@drawable/blue_button_background"
         android:onClick="save_info"
         android:paddingLeft="50dp"
         android:paddingRight="50dp"

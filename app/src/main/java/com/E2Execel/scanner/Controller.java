@@ -154,14 +154,22 @@ public class Controller extends AppCompatActivity {
     }
 
     private void check_first() {
-        if (!"".equals(globalValues.getControllersrno())) {
+        //previously : !"".equals(globalValues.getControllersrno()
+        if (globalValues.getControllersrno() != null) {
             srno_textview.setText(globalValues.getControllersrno());
         }
-        if (!globalValues.getControllerimage().equals("")) {
-            Glide.with(this).load("http://192.168.0.110:8000" + globalValues.getControllerimage()).into(imageview);
-            IMAGE_SET = 1;
-            Log.v("image_set", "http://192.168.0.110:8000" + globalValues.getControllerimage());
+        if (globalValues.getControllerimage() != null) {
+            if ("".equals(globalValues.getControllerimage())) {
+                imageview.setImageDrawable(getResources().getDrawable(R.drawable.upload_photo));
+            } else {
+                Glide.with(this).load("http://192.168.0.110:8000" + globalValues.getControllerimage()).into(imageview);
+                IMAGE_SET = 1;
+                Log.v("image_set", "http://192.168.0.110:8000" + globalValues.getControllerimage());
+            }
+        } else {
+            imageview.setImageDrawable(getResources().getDrawable(R.drawable.upload_photo));
         }
+
 
     }
 

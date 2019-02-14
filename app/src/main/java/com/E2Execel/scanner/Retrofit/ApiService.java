@@ -1,5 +1,6 @@
 package com.E2Execel.scanner.Retrofit;
 
+import com.E2Execel.scanner.Pojo.add_pv_module.AddPvModule;
 import com.E2Execel.scanner.Pojo.login_details.Login;
 import com.E2Execel.scanner.Pojo.result_details.Result;
 import com.E2Execel.scanner.Pojo.search_details.Search;
@@ -17,6 +18,7 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface ApiService {
 
@@ -40,15 +42,26 @@ public interface ApiService {
     @GET("panel/api/v1/info/{path}")
     Call<Result> getResultsJson(@Header("APIKEY") String APIKEY, @Header("Authorization") String Authorization, @Path("path") String path);
 
-    //for PvModule
+
+
+    //add pv module with Id
     @Multipart
-    @POST("panel/api/v1/update/{path}")
-    Call<UpdateDetails> uploadPvmoduleInfo(@Header("APIKEY") String APIKEY, @Header("Authorization") String Authorization,
-                                           @Part MultipartBody.Part file1, @Part("pvmodulesrno") RequestBody pvmodulesrno,
-                                           @Part("Source") RequestBody Source, @Path("path") String path);
+    @POST("panel/api/v1/pvmodule")
+    Call<AddPvModule> addPvModuleWithId(@Header("APIKEY") String APIKEY, @Header("Authorization") String Authorization,
+                                  @Part MultipartBody.Part file1, @Part("srno") RequestBody srno,
+                                  @Part("panel") RequestBody panel, @Part("id") RequestBody id,
+                                  @Part("Source") RequestBody Source);
+
+    //add pv module without Id
+    @Multipart
+    @POST("panel/api/v1/pvmodule")
+    Call<AddPvModule> addPvModuleWithOutId(@Header("APIKEY") String APIKEY, @Header("Authorization") String Authorization,
+                                        @Part MultipartBody.Part file1, @Part("srno") RequestBody srno,
+                                        @Part("panel") RequestBody panel,
+                                        @Part("Source") RequestBody Source);
 
 
-    //for Installation info
+    //for Pump info
     @Multipart
     @POST("panel/api/v1/update/{path}")
     Call<UpdateDetails> uploadPumpInfo(@Header("APIKEY") String APIKEY, @Header("Authorization") String Authorization,
@@ -76,6 +89,13 @@ public interface ApiService {
     @POST("panel/api/v1/update/{path}")
     Call<UpdateDetails> uploadInstallationInfo(@Header("APIKEY") String APIKEY, @Header("Authorization") String Authorization,
                                                @Part MultipartBody.Part file1, @Part("installationstatus") RequestBody installationstatus,
+                                               @Part("Source") RequestBody Source, @Path("path") String path);
+
+    //for update user photo
+    @Multipart
+    @POST("panel/api/v1/update/{path}")
+    Call<UpdateDetails> uploadUserPhoto(@Header("APIKEY") String APIKEY, @Header("Authorization") String Authorization,
+                                               @Part MultipartBody.Part file1,
                                                @Part("Source") RequestBody Source, @Path("path") String path);
 
 }

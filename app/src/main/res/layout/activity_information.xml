@@ -58,7 +58,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:layout_weight="1"
-                    android:text="SrNO"
+                    android:text="Serial No."
                     android:textColor="@color/blue"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -475,7 +475,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:background="@color/blue"
+        android:background="@drawable/blue_button_background"
         android:onClick="add_details"
         android:paddingLeft="65dp"
         android:paddingRight="65dp"

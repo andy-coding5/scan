@@ -138,82 +138,6 @@ public class SearchResults extends AppCompatActivity {
                 public void onClick(View view) {
                     Toast.makeText(context, thisDatum.getName(), Toast.LENGTH_LONG).show();
                     globalValues.setID(thisDatum.getId().toString());
-
-                    Call<Result> call = api.getResultsJson(globalValues.APIKEY, "Token " + pref.getString("token", null), globalValues.getID());
-                    progressDialog.show();
-
-                    call.enqueue(new Callback<Result>() {
-                        @Override
-                        public void onResponse(Call<Result> call, Response<Result> response) {
-                            progressDialog.dismiss();
-                            if (response.isSuccessful()) {
-
-                                Data data = response.body().getData();
-
-                                /*set some values in global class, required in nest 3 activities
-                                 *
-                                 */
-                                //getting the size of pv module lst
-                                String size = String.valueOf(response.body().getData().getPvmodule().size());
-                                globalValues.setPvmodule(data.getPvmodule());
-
-                                globalValues.setID(data.getId().toString());
-
-                                globalValues.setPumpsrno(data.getPumpsrno());
-                                globalValues.setPumpimage(data.getPumpimage());
-                                globalValues.setControllersrno(data.getControllersrno());
-                                globalValues.setControllerimage(data.getControllerimage());
-                                globalValues.setHpmotorsrno(data.getHpmotorsrno());
-                                globalValues.setHpmotorimage(data.getHpmotorimage());
-                                globalValues.setInstallationstatus(data.getInstallationstatus());
-                                globalValues.setInstallationimage(data.getInstallationimage());
-
-
-                                //necessary values to be set in next activity
-                                Intent i = new Intent(SearchResults.this, Information.class);
-                                i.putExtra("size", size);
-                                i.putExtra("srno", data.getSrno());
-                                i.putExtra("name", data.getName());
-                                i.putExtra("mobile", data.getMobile());
-                                i.putExtra("aadhar", data.getAadhar());
-                                i.putExtra("photo", data.getPhoto());
-
-                                i.putExtra("address1", data.getAddressLine1());
-                                i.putExtra("address2", data.getAddressLine2());
-                                i.putExtra("zipcode", data.getZipcode());
-                                i.putExtra("village", data.getVillage());
-                                i.putExtra("city", data.getCity());
-                                i.putExtra("district", data.getDistrict());
-                                i.putExtra("state", data.getState());
-
-                                startActivity(i);
-
-
-                            } else {
-                                update_token();
-
-                                Toast.makeText(SearchResults.this, "response not received", Toast.LENGTH_SHORT).show();
-                                try {
-                                    JSONObject jObjError = new JSONObject(response.errorBody().string());
-                                    /* String status = jObjError.getString("detail");
-                                     */
-                                    Toast.makeText(getApplicationContext(), jObjError.toString(), Toast.LENGTH_LONG).show();
-
-                                    //Build_alert_dialog(getApplicationContext(), "Error", status);
-
-                                } catch (Exception e) {
-                                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-                                }
-                            }
-
-                        }
-
-                        @Override
-                        public void onFailure(Call<Result> call, Throwable t) {
-                            progressDialog.dismiss();
-                            Toast.makeText(SearchResults.this, "Please Check Internet Connection", Toast.LENGTH_SHORT).show();
-                        }
-                    });
                 }
             });
 
@@ -221,48 +145,7 @@ public class SearchResults extends AppCompatActivity {
         }
     }
 
-    public void update_token() {
-        //pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        //Toast.makeText(this, "email from pref: " + pref.getString("email", "not fetched from pref"), Toast.LENGTH_SHORT).show();
-        ApiService api = RetroClient.getApiService();
 
-
-        Call<Login> call = api.getLoginJason(pref.getString("email", null), pref.getString("password", null), "Android");
-
-        progressDialog.show();
-
-        call.enqueue(new Callback<Login>() {
-            @Override
-            public void onResponse(Call<Login> call, Response<Login> response) {
-                progressDialog.dismiss();
-                if (response.isSuccessful()) {
-
-                    editor.putString("token", response.body().getData().getToken());
-                    editor.commit();
-
-                } else {
-                    //but but i can access the error body here.,
-                    try {
-                        JSONObject jObjError = new JSONObject(response.errorBody().string());
-                        String status = jObjError.getString("message");
-                        String error_msg = jObjError.getJSONObject("data").getString("errors");
-                        Build_alert_dialog(getApplicationContext(), status, error_msg);
-
-                    } catch (Exception e) {
-                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Login> call, Throwable t) {
-                progressDialog.dismiss();
-                Build_alert_dialog(SearchResults.this, "Connection Error", "Please Check You Internet Connection");
-            }
-        });
-
-
-    }
 
 
 }

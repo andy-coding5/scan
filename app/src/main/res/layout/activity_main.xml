@@ -62,7 +62,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="60dp"
-                android:background="@color/blue"
+                android:background="@drawable/blue_button_background"
                 android:onClick="search_process"
                 android:paddingLeft="60dp"
                 android:paddingRight="60dp"

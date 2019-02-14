@@ -47,7 +47,7 @@ public class PvModulesList extends AppCompatActivity {
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
 
-    private List<PvModulesList> pvmoduleList;
+    private List<Pvmodule> pvmoduleList;
     private ListView pvmoduleListview;
 
     @Override
@@ -91,12 +91,52 @@ public class PvModulesList extends AppCompatActivity {
 
         update_token();
 
-        Intent i = getIntent();
-        ArrayList list = (ArrayList<Datum>) i.getSerializableExtra("pvmodulelist");
+        Call<Result> call = api.getResultsJson(globalValues.APIKEY, "Token " + pref.getString("token", null), globalValues.getID());
+        progressDialog.show();
 
-        pvmoduleListview = findViewById(R.id.pvmoduleList);
-        adapter = new ListViewAdapter(this, list);
-        pvmoduleListview.setAdapter(adapter);
+        call.enqueue(new Callback<Result>() {
+            @Override
+            public void onResponse(Call<Result> call, Response<Result> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+
+                    Data data = response.body().getData();
+
+                    globalValues.setPvmodule(data.getPvmodule());
+                    pvmoduleList = data.getPvmodule();
+
+
+                    pvmoduleListview = findViewById(R.id.pvmoduleList);
+                    adapter = new ListViewAdapter(PvModulesList.this, pvmoduleList);
+                    pvmoduleListview.setAdapter(adapter);
+
+
+                } else {
+                    update_token();
+
+                    Toast.makeText(PvModulesList.this, "response not received", Toast.LENGTH_SHORT).show();
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        /* String status = jObjError.getString("detail");
+                         */
+                        Toast.makeText(getApplicationContext(), jObjError.toString(), Toast.LENGTH_LONG).show();
+
+                        //Build_alert_dialog(getApplicationContext(), "Error", status);
+
+                    } catch (Exception e) {
+                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<Result> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(PvModulesList.this, "Please Check Internet Connection", Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
     }
 
@@ -144,6 +184,8 @@ public class PvModulesList extends AppCompatActivity {
     }
 
     public void add_new_pvmodule(View view) {
+        //to add new pv modulde, no need to send any data load the fresh empty pv module activity
+        startActivity(new Intent(PvModulesList.this, Pvmodules.class));
     }
 
     class ListViewAdapter extends BaseAdapter {
@@ -195,11 +237,66 @@ public class PvModulesList extends AppCompatActivity {
 
                     String ID = String.valueOf(thisPvmodule.getId());       //ID of clicked Pv module
                     //globalValues.setID(thisPvmodule.getId().toString());
+                    Intent i = new Intent(PvModulesList.this, Pvmodules.class);
+                    i.putExtra("id", ID);
+                    i.putExtra("pvmodulesrno", thisPvmodule.getSrno());
+                    i.putExtra("pvmoduleimage", thisPvmodule.getImage());
+                    startActivity(i);
 
                 }
             });
 
             return view;
         }
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Call<Result> call = api.getResultsJson(globalValues.APIKEY, "Token " + pref.getString("token", null), globalValues.getID());
+        progressDialog.show();
+
+        call.enqueue(new Callback<Result>() {
+            @Override
+            public void onResponse(Call<Result> call, Response<Result> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()) {
+
+                    Data data = response.body().getData();
+
+                    globalValues.setPvmodule(data.getPvmodule());
+                    pvmoduleList = data.getPvmodule();
+
+
+                    pvmoduleListview = findViewById(R.id.pvmoduleList);
+                    adapter = new ListViewAdapter(PvModulesList.this, pvmoduleList);
+                    pvmoduleListview.setAdapter(adapter);
+
+
+                } else {
+                    update_token();
+
+                    Toast.makeText(PvModulesList.this, "response not received", Toast.LENGTH_SHORT).show();
+                    try {
+                        JSONObject jObjError = new JSONObject(response.errorBody().string());
+                        /* String status = jObjError.getString("detail");
+                         */
+                        Toast.makeText(getApplicationContext(), jObjError.toString(), Toast.LENGTH_LONG).show();
+
+                        //Build_alert_dialog(getApplicationContext(), "Error", status);
+
+                    } catch (Exception e) {
+                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<Result> call, Throwable t) {
+                progressDialog.dismiss();
+                Toast.makeText(PvModulesList.this, "Please Check Internet Connection", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
