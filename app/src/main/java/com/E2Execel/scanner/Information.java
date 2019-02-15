@@ -453,7 +453,7 @@ public class Information extends AppCompatActivity {
 
                         File f = new File(FilePathStr);
 
-                        image_file_to_upload = MultipartBody.Part.createFormData("image", f.getName(), RequestBody.create(MediaType.parse("image/*"), f));
+                        image_file_to_upload = MultipartBody.Part.createFormData("photo", f.getName(), RequestBody.create(MediaType.parse("image/*"), f));
 
 
                     } catch (IOException e) {
@@ -474,7 +474,7 @@ public class Information extends AppCompatActivity {
                 File file = new File(camUri.getPath());
 
 
-                image_file_to_upload = MultipartBody.Part.createFormData("image", file.getName(), RequestBody.create(MediaType.parse("image/*"), file));
+                image_file_to_upload = MultipartBody.Part.createFormData("photo", file.getName(), RequestBody.create(MediaType.parse("image/*"), file));
 
 
             }

@@ -12,6 +12,10 @@ public class globalValues {
     private static String controllerimage = "";
     private static String pumpsrno = "";
     private static String pumpimage = "";
+    private static String hpmotorsrno = "";
+    private static String hpmotorimage = "";
+    private static String installationimage = "";
+    private static String installationstatus = "";
 
     public static String getPumpsrno() {
         return pumpsrno;
@@ -29,11 +33,6 @@ public class globalValues {
         globalValues.pumpimage = pumpimage;
     }
 
-    private static String hpmotorsrno = "";
-    private static String hpmotorimage = "";
-    private static String installationimage = "";
-    private static String installationstatus = "";
-
     public static String getID() {
         return ID;
     }
@@ -41,7 +40,6 @@ public class globalValues {
     public static void setID(String ID) {
         globalValues.ID = ID;
     }
-
 
     public static List<Pvmodule> getPvmodule() {
         return pvmodule;

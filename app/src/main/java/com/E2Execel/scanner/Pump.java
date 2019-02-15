@@ -156,7 +156,7 @@ public class Pump extends AppCompatActivity {
 
     private void check_first() {
         if (globalValues.getPumpsrno() != null) {
-            srno_textview.setText(globalValues.getControllersrno());
+            srno_textview.setText(globalValues.getPumpsrno());
         }
         if (globalValues.getPumpimage() != null) {
             if ("".equals(globalValues.getPumpimage())) {
@@ -332,15 +332,17 @@ public class Pump extends AppCompatActivity {
 
     public void next_activity(View view) {
 
-
         //CALL
-        Call<UpdateDetails> call = api.uploadPumpInfo(globalValues.APIKEY, "Token " + pref.getString("token", null),
-                image_file_to_upload, RequestBody.create(MediaType.parse("text/plain"), srno_textview.getText().toString()), RequestBody.create(MediaType.parse("text/plain"), "Android"), globalValues.getID());
+        Call<UpdateDetails> call2 = api.uploadPumpInfo(globalValues.APIKEY, "Token " + pref.getString("token", null),
+                image_file_to_upload,
+                RequestBody.create(MediaType.parse("text/plain"), srno_textview.getText().toString()),
+                RequestBody.create(MediaType.parse("text/plain"), "Android"),
+                globalValues.getID());
 
         progressDialog.show();
 
 
-        call.enqueue(new Callback<UpdateDetails>() {
+        call2.enqueue(new Callback<UpdateDetails>() {
             @Override
             public void onResponse(Call<UpdateDetails> call, Response<UpdateDetails> response) {
                 progressDialog.dismiss();
