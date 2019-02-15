@@ -113,11 +113,7 @@ public class Controller extends AppCompatActivity {
         progressDialog.setMax(100);
         progressDialog.setMessage("Wait");
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-
-
-
-
-
+        
         update_token();
 
         check_first();
