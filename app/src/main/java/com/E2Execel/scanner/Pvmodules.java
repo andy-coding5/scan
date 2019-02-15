@@ -123,6 +123,8 @@ public class Pvmodules extends AppCompatActivity {
         progressDialog.setMessage("Wait");
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 
+
+
         update_token();
 
         Intent i = getIntent();

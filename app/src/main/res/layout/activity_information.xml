@@ -16,15 +16,15 @@
         android:src="@drawable/user"
         app:highlightColor="#80fb1743"
         app:strokeColor="@color/blue"
-        app:strokeWidth="10px" />
+        app:strokeWidth="5px" />
 
     <ImageView
 
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_alignTop="@+id/scroll_layout"
-        android:layout_marginStart="-17dp"
-        android:layout_marginLeft="-17dp"
+        android:layout_marginStart="-14dp"
+        android:layout_marginLeft="-14dp"
         android:layout_marginTop="-29dp"
         android:layout_toEndOf="@+id/main_image"
         android:layout_toRightOf="@+id/main_image"
@@ -55,7 +55,7 @@
                 android:padding="15dp">
 
                 <TextView
-                    android:layout_width="100dp"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
 
@@ -72,7 +72,7 @@
                     android:layout_gravity="start"
                     android:layout_weight="1"
                     android:text="SrNO here"
-                    android:textAlignment="center"
+                    android:textAlignment="textStart"
                     android:textSize="14sp" />
             </LinearLayout>
 
@@ -92,7 +92,7 @@
                 android:padding="15dp">
 
                 <TextView
-                    android:layout_width="100dp"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
 
@@ -109,7 +109,7 @@
                     android:layout_gravity="start"
                     android:layout_weight="1"
                     android:text="Name here"
-                    android:textAlignment="center"
+                    android:textAlignment="textStart"
                     android:textSize="14sp" />
             </LinearLayout>
 
@@ -130,7 +130,7 @@
                 android:padding="15dp">
 
                 <TextView
-                    android:layout_width="100dp"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
 
@@ -148,7 +148,7 @@
                     android:layout_gravity="start"
                     android:layout_weight="1"
                     android:text="Mobile here"
-                    android:textAlignment="center"
+                    android:textAlignment="textStart"
                     android:textSize="14sp" />
             </LinearLayout>
 
@@ -169,7 +169,7 @@
                 android:padding="15dp">
 
                 <TextView
-                    android:layout_width="100dp"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
 
@@ -187,7 +187,7 @@
                     android:layout_gravity="start"
                     android:layout_weight="1"
                     android:text="Aadhar here"
-                    android:textAlignment="center"
+                    android:textAlignment="textStart"
                     android:textSize="14sp" />
             </LinearLayout>
 
@@ -211,7 +211,7 @@
                 >
 
                 <TextView
-                    android:layout_width="100dp"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
 
@@ -229,7 +229,7 @@
                     android:layout_gravity="start"
                     android:layout_weight="1"
                     android:text="Address1 hereasdfsfdsfsdfsdfsdfsdfsdfsdfsddfssdsdf"
-                    android:textAlignment="center"
+                    android:textAlignment="textStart"
                     android:textSize="14sp" />
             </LinearLayout>
 
@@ -250,7 +250,7 @@
                 android:padding="15dp">
 
                 <TextView
-                    android:layout_width="100dp"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
 
@@ -268,7 +268,7 @@
                     android:layout_gravity="start"
                     android:layout_weight="1"
                     android:text="Address2 here"
-                    android:textAlignment="center"
+                    android:textAlignment="textStart"
                     android:textSize="14sp" />
             </LinearLayout>
 
@@ -289,7 +289,7 @@
                 android:padding="15dp">
 
                 <TextView
-                    android:layout_width="100dp"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
 
@@ -307,7 +307,7 @@
                     android:layout_gravity="start"
                     android:layout_weight="1"
                     android:text="Village here"
-                    android:textAlignment="center"
+                    android:textAlignment="textStart"
                     android:textSize="14sp" />
             </LinearLayout>
 
@@ -328,7 +328,7 @@
                 android:padding="15dp">
 
                 <TextView
-                    android:layout_width="100dp"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
 
@@ -346,7 +346,7 @@
                     android:layout_gravity="start"
                     android:layout_weight="1"
                     android:text="City here"
-                    android:textAlignment="center"
+                    android:textAlignment="textStart"
                     android:textSize="14sp" />
             </LinearLayout>
 
@@ -368,7 +368,7 @@
                 android:padding="15dp">
 
                 <TextView
-                    android:layout_width="100dp"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
 
@@ -386,7 +386,7 @@
                     android:layout_gravity="start"
                     android:layout_weight="1"
                     android:text="District here"
-                    android:textAlignment="center"
+                    android:textAlignment="textStart"
                     android:textSize="14sp" />
             </LinearLayout>
 
@@ -407,7 +407,7 @@
                 android:padding="15dp">
 
                 <TextView
-                    android:layout_width="100dp"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
 
@@ -425,7 +425,7 @@
                     android:layout_gravity="start"
                     android:layout_weight="1"
                     android:text="ZipCode here"
-                    android:textAlignment="center"
+                    android:textAlignment="textStart"
                     android:textSize="14sp" />
             </LinearLayout>
 
@@ -447,7 +447,7 @@
                 android:padding="15dp">
 
                 <TextView
-                    android:layout_width="100dp"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
 
@@ -465,7 +465,7 @@
                     android:layout_gravity="start"
                     android:layout_weight="1"
                     android:text="State here"
-                    android:textAlignment="center"
+                    android:textAlignment="textStart"
                     android:textSize="14sp" />
             </LinearLayout>
         </LinearLayout>

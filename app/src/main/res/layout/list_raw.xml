@@ -1,15 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:padding="15dip">
 
+    <com.github.abdularis.civ.CircleImageView
+        android:id="@+id/main_image"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+
+        android:layout_alignParentLeft="true"
+        android:layout_centerHorizontal="true"
+
+        android:src="@drawable/user"
+        app:highlightColor="#80fb1743"
+        app:strokeColor="@color/blue"
+        app:strokeWidth="2px" />
 
     <TextView
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@id/main_image"
         android:paddingLeft="10dp"
         android:text="ROHAN VACHHANI"
         android:textColor="#040404"
@@ -22,7 +38,9 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/name"
+        android:layout_marginLeft="5dp"
         android:layout_marginTop="3dip"
+        android:layout_toRightOf="@id/main_image"
         android:paddingLeft="10dp"
         android:text="135478"
         android:textColor="#343434"

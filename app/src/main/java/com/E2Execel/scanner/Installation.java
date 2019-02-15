@@ -1,5 +1,6 @@
 package com.E2Execel.scanner;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -7,11 +8,14 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -40,6 +44,8 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import okhttp3.MediaType;
@@ -79,6 +85,9 @@ public class Installation extends AppCompatActivity {
 
     private static int IMAGE_SET = 0;
 
+    String[] app_permission = {Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+    private final static int ALL_PERMISSIONS_RESULT = 1240;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,6 +125,7 @@ public class Installation extends AppCompatActivity {
         progressDialog.setMax(100);
         progressDialog.setMessage("Wait");
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+
 
         update_token();
 
@@ -192,8 +202,29 @@ public class Installation extends AppCompatActivity {
         showPictureDialog();
     }
 
+    private boolean checkAndRequestPermission() {
+        List<String> listPermissionNeeded = new ArrayList<>();
+        for (String perm : app_permission) {
+            if (ContextCompat.checkSelfPermission(this, perm) != PackageManager.PERMISSION_GRANTED) {
+                //ask to grant the permission
+                listPermissionNeeded.add(perm);
+
+            }
+
+        }
+
+        if (!listPermissionNeeded.isEmpty()) {
+            ActivityCompat.requestPermissions(this, listPermissionNeeded.toArray(new String[listPermissionNeeded.size()]), ALL_PERMISSIONS_RESULT);
+            return false;
+        }
+        //success_all_permission = 1;
+        return true;
+    }
+
     private void showPictureDialog() {
 
+        if (checkAndRequestPermission()) {
+        }
         AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
         pictureDialog.setTitle("Select Action");
         String[] pictureDialogItems = {
@@ -205,10 +236,19 @@ public class Installation extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
                             case 0:
-                                choosePhotoFromGallary();
+                                if (!checkAndRequestPermission()) {
+                                    Build_alert_dialog(Installation.this, "Permission request", "Please Allow to access ");
+                                } else {
+                                    choosePhotoFromGallary();
+                                }
                                 break;
                             case 1:
-                                takePhotoFromCamera();
+                                if (!checkAndRequestPermission()) {
+                                    Build_alert_dialog(Installation.this, "Permission request", "Please Allow to access ");
+                                } else {
+                                    takePhotoFromCamera();
+                                }
+
                                 break;
                         }
                     }

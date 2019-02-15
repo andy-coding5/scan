@@ -16,11 +16,23 @@ public class Datum implements Serializable {
     @SerializedName("name")
     @Expose
     private String name;
+    @SerializedName("photo")
+    @Expose
+    private String photo;
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
 
     public Datum(Integer id, String srno, String name) {
         this.id = id;
         this.srno = srno;
         this.name = name;
+        this.photo = photo;
     }
 
     public Integer getId() {

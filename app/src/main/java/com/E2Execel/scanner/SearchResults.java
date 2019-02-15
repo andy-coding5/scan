@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,6 +24,7 @@ import com.E2Execel.scanner.Pojo.search_details.Datum;
 import com.E2Execel.scanner.Retrofit.ApiService;
 import com.E2Execel.scanner.Retrofit.RetroClient;
 import com.E2Execel.scanner.global.globalValues;
+import com.bumptech.glide.Glide;
 
 import org.json.JSONObject;
 
@@ -44,6 +46,7 @@ public class SearchResults extends AppCompatActivity {
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
     private ProgressDialog progressDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +74,7 @@ public class SearchResults extends AppCompatActivity {
         //get intent from main activity
         Intent i = getIntent();
         ArrayList list = (ArrayList<Datum>) i.getSerializableExtra("datum_list");
-       // Toast.makeText(this, "list successfully", Toast.LENGTH_SHORT).show();
+        // Toast.makeText(this, "list successfully", Toast.LENGTH_SHORT).show();
 
 
         //list view str from list_row.xml
@@ -126,11 +129,13 @@ public class SearchResults extends AppCompatActivity {
 
             TextView name_textview = view.findViewById(R.id.name);
             TextView srno_textview = view.findViewById(R.id.srno);
+            ImageView im = view.findViewById(R.id.main_image);
 
             final Datum thisDatum = datum.get(i);
 
             name_textview.setText(thisDatum.getName());
             srno_textview.setText(thisDatum.getSrno());
+            Glide.with(SearchResults.this).load("http://192.168.0.110:8000" + thisDatum.getPhoto()).into(im);
 
 
             view.setOnClickListener(new View.OnClickListener() {
@@ -145,8 +150,6 @@ public class SearchResults extends AppCompatActivity {
             return view;
         }
     }
-
-
 
 
 }
