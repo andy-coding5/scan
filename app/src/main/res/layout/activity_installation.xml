@@ -24,7 +24,9 @@
 
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
-            android:src="@drawable/upload_photo" />
+            android:src="@drawable/upload_photo"
+            android:background="@color/blue"
+            android:padding="2dp"/>
 
         <Button
             android:id="@+id/upload_image"
