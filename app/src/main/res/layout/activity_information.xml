@@ -40,12 +40,13 @@
         android:padding="10dp"
         android:scrollbars="none">
 
-        <TableLayout
+        <LinearLayout
             android:id="@+id/table_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <TableRow
+            <LinearLayout
 
                 android:id="@+id/l_view0"
                 android:layout_width="match_parent"
@@ -54,10 +55,10 @@
                 android:padding="15dp">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
-                    android:layout_weight="1"
+
                     android:text="Serial No."
                     android:textColor="@color/blue"
                     android:textSize="14sp"
@@ -71,9 +72,9 @@
                     android:layout_gravity="start"
                     android:layout_weight="1"
                     android:text="SrNO here"
-                    android:textAlignment="textStart"
+                    android:textAlignment="center"
                     android:textSize="14sp" />
-            </TableRow>
+            </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
@@ -82,7 +83,7 @@
                 android:layout_marginRight="15dp"
                 android:background="@color/light_blue" />
 
-            <TableRow
+            <LinearLayout
 
                 android:id="@+id/l_view1"
                 android:layout_width="match_parent"
@@ -91,10 +92,10 @@
                 android:padding="15dp">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
-                    android:layout_weight="1"
+
                     android:text="Name"
                     android:textColor="@color/blue"
                     android:textSize="14sp"
@@ -108,9 +109,9 @@
                     android:layout_gravity="start"
                     android:layout_weight="1"
                     android:text="Name here"
-                    android:textAlignment="textStart"
+                    android:textAlignment="center"
                     android:textSize="14sp" />
-            </TableRow>
+            </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
@@ -119,7 +120,7 @@
                 android:layout_marginRight="15dp"
                 android:background="@color/light_blue" />
 
-            <TableRow
+            <LinearLayout
                 android:id="@+id/l_view2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -129,10 +130,10 @@
                 android:padding="15dp">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
-                    android:layout_weight="1"
+
                     android:text="Mobile No."
                     android:textAlignment="textStart"
                     android:textColor="@color/blue"
@@ -147,9 +148,9 @@
                     android:layout_gravity="start"
                     android:layout_weight="1"
                     android:text="Mobile here"
-                    android:textAlignment="textStart"
+                    android:textAlignment="center"
                     android:textSize="14sp" />
-            </TableRow>
+            </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
@@ -158,7 +159,7 @@
                 android:layout_marginRight="15dp"
                 android:background="@color/light_blue" />
 
-            <TableRow
+            <LinearLayout
                 android:id="@+id/l_view22"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -168,10 +169,10 @@
                 android:padding="15dp">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
-                    android:layout_weight="1"
+
                     android:text="Aadhar No."
                     android:textAlignment="textStart"
                     android:textColor="@color/blue"
@@ -186,9 +187,9 @@
                     android:layout_gravity="start"
                     android:layout_weight="1"
                     android:text="Aadhar here"
-                    android:textAlignment="textStart"
+                    android:textAlignment="center"
                     android:textSize="14sp" />
-            </TableRow>
+            </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
@@ -197,20 +198,23 @@
                 android:layout_marginRight="15dp"
                 android:background="@color/light_blue" />
 
-            <TableRow
+            <LinearLayout
                 android:id="@+id/l_view3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/l_view2"
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal"
-                android:padding="15dp">
+                android:padding="15dp"
+
+
+                >
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
-                    android:layout_weight="1"
+
                     android:text="Address Line 1"
                     android:textAlignment="textStart"
                     android:textColor="@color/blue"
@@ -224,10 +228,10 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
                     android:layout_weight="1"
-                    android:text="Address1 here"
-                    android:textAlignment="textStart"
+                    android:text="Address1 hereasdfsfdsfsdfsdfsdfsdfsdfsdfsddfssdsdf"
+                    android:textAlignment="center"
                     android:textSize="14sp" />
-            </TableRow>
+            </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
@@ -236,7 +240,7 @@
                 android:layout_marginRight="15dp"
                 android:background="@color/light_blue" />
 
-            <TableRow
+            <LinearLayout
                 android:id="@+id/l_view33"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -246,10 +250,10 @@
                 android:padding="15dp">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
-                    android:layout_weight="1"
+
                     android:text="Address Line 2"
                     android:textAlignment="textStart"
                     android:textColor="@color/blue"
@@ -264,9 +268,9 @@
                     android:layout_gravity="start"
                     android:layout_weight="1"
                     android:text="Address2 here"
-                    android:textAlignment="textStart"
+                    android:textAlignment="center"
                     android:textSize="14sp" />
-            </TableRow>
+            </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
@@ -275,7 +279,7 @@
                 android:layout_marginRight="15dp"
                 android:background="@color/light_blue" />
 
-            <TableRow
+            <LinearLayout
                 android:id="@+id/l_view4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -285,10 +289,10 @@
                 android:padding="15dp">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
-                    android:layout_weight="1"
+
                     android:text="Village / Town"
                     android:textAlignment="textStart"
                     android:textColor="@color/blue"
@@ -303,9 +307,9 @@
                     android:layout_gravity="start"
                     android:layout_weight="1"
                     android:text="Village here"
-                    android:textAlignment="textStart"
+                    android:textAlignment="center"
                     android:textSize="14sp" />
-            </TableRow>
+            </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
@@ -314,7 +318,7 @@
                 android:layout_marginRight="15dp"
                 android:background="@color/light_blue" />
 
-            <TableRow
+            <LinearLayout
                 android:id="@+id/l_view5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -324,10 +328,10 @@
                 android:padding="15dp">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
-                    android:layout_weight="1"
+
                     android:text="City / Taluka"
                     android:textAlignment="textStart"
                     android:textColor="@color/blue"
@@ -342,9 +346,9 @@
                     android:layout_gravity="start"
                     android:layout_weight="1"
                     android:text="City here"
-                    android:textAlignment="textStart"
+                    android:textAlignment="center"
                     android:textSize="14sp" />
-            </TableRow>
+            </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
@@ -354,7 +358,7 @@
                 android:background="@color/light_blue" />
 
 
-            <TableRow
+            <LinearLayout
                 android:id="@+id/l_view6"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -364,10 +368,10 @@
                 android:padding="15dp">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
-                    android:layout_weight="1"
+
                     android:text="District"
                     android:textAlignment="textStart"
                     android:textColor="@color/blue"
@@ -382,9 +386,9 @@
                     android:layout_gravity="start"
                     android:layout_weight="1"
                     android:text="District here"
-                    android:textAlignment="textStart"
+                    android:textAlignment="center"
                     android:textSize="14sp" />
-            </TableRow>
+            </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
@@ -393,7 +397,7 @@
                 android:layout_marginRight="15dp"
                 android:background="@color/light_blue" />
 
-            <TableRow
+            <LinearLayout
                 android:id="@+id/l_view55"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -403,10 +407,10 @@
                 android:padding="15dp">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
-                    android:layout_weight="1"
+
                     android:text="ZipCode"
                     android:textAlignment="textStart"
                     android:textColor="@color/blue"
@@ -421,9 +425,9 @@
                     android:layout_gravity="start"
                     android:layout_weight="1"
                     android:text="ZipCode here"
-                    android:textAlignment="textStart"
+                    android:textAlignment="center"
                     android:textSize="14sp" />
-            </TableRow>
+            </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
@@ -433,7 +437,7 @@
                 android:background="@color/light_blue" />
 
 
-            <TableRow
+            <LinearLayout
                 android:id="@+id/l_view7"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -443,10 +447,10 @@
                 android:padding="15dp">
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="start"
-                    android:layout_weight="1"
+
                     android:text="State"
                     android:textAlignment="textStart"
                     android:textColor="@color/blue"
@@ -461,10 +465,10 @@
                     android:layout_gravity="start"
                     android:layout_weight="1"
                     android:text="State here"
-                    android:textAlignment="textStart"
+                    android:textAlignment="center"
                     android:textSize="14sp" />
-            </TableRow>
-        </TableLayout>
+            </LinearLayout>
+        </LinearLayout>
     </ScrollView>
 
     <Button

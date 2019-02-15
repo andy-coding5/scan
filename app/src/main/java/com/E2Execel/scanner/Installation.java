@@ -138,7 +138,7 @@ public class Installation extends AppCompatActivity {
             public void onResponse(Call<Login> call, Response<Login> response) {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
-                    Toast.makeText(Installation.this, "new token: " + "token " + response.body().getData().getToken(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(Installation.this, "new token: " + "token " + response.body().getData().getToken(), Toast.LENGTH_SHORT).show();
                     editor.putString("token", response.body().getData().getToken());
                     editor.commit();
 
@@ -151,7 +151,7 @@ public class Installation extends AppCompatActivity {
                         Build_alert_dialog(getApplicationContext(), status, error_msg);
 
                     } catch (Exception e) {
-                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                       // Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 }
             }
@@ -295,7 +295,7 @@ public class Installation extends AppCompatActivity {
 
                     } catch (IOException e) {
                         e.printStackTrace();
-                        Toast.makeText(Installation.this, "Failed!", Toast.LENGTH_SHORT).show();
+                      //  Toast.makeText(Installation.this, "Failed!", Toast.LENGTH_SHORT).show();
                     }
                 }
 

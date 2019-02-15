@@ -124,7 +124,7 @@ public class Hpmotor extends AppCompatActivity {
             public void onResponse(Call<Login> call, Response<Login> response) {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
-                    Toast.makeText(Hpmotor.this, "new token: " + "token " + response.body().getData().getToken(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(Hpmotor.this, "new token: " + "token " + response.body().getData().getToken(), Toast.LENGTH_SHORT).show();
                     editor.putString("token", response.body().getData().getToken());
                     editor.commit();
 
@@ -137,7 +137,7 @@ public class Hpmotor extends AppCompatActivity {
                         Build_alert_dialog(getApplicationContext(), status, error_msg);
 
                     } catch (Exception e) {
-                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                       // Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 }
             }
@@ -316,9 +316,9 @@ public class Hpmotor extends AppCompatActivity {
             IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
             if (result != null) {
                 if (result.getContents() == null) {
-                    Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
+                   // Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
                     srno_textview.setText(result.getContents());
                 }
             } else {

@@ -71,7 +71,7 @@ public class SearchResults extends AppCompatActivity {
         //get intent from main activity
         Intent i = getIntent();
         ArrayList list = (ArrayList<Datum>) i.getSerializableExtra("datum_list");
-        Toast.makeText(this, "list successfully", Toast.LENGTH_SHORT).show();
+       // Toast.makeText(this, "list successfully", Toast.LENGTH_SHORT).show();
 
 
         //list view str from list_row.xml
@@ -136,7 +136,7 @@ public class SearchResults extends AppCompatActivity {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(context, thisDatum.getName(), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(context, thisDatum.getName(), Toast.LENGTH_LONG).show();
                     globalValues.setID(thisDatum.getId().toString());
                     startActivity(new Intent(SearchResults.this, Information.class));
                 }

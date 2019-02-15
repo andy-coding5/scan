@@ -217,7 +217,7 @@ public class Information extends AppCompatActivity {
             public void onResponse(Call<Login> call, Response<Login> response) {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
-                    Toast.makeText(Information.this, "new token: " + "token " + response.body().getData().getToken(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(Information.this, "new token: " + "token " + response.body().getData().getToken(), Toast.LENGTH_SHORT).show();
                     editor.putString("token", response.body().getData().getToken());
                     editor.commit();
 
@@ -230,7 +230,7 @@ public class Information extends AppCompatActivity {
                         Build_alert_dialog(getApplicationContext(), status, error_msg);
 
                     } catch (Exception e) {
-                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                       // Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 }
             }
@@ -539,7 +539,7 @@ public class Information extends AppCompatActivity {
                     } else {
                         update_token();
 
-                        Toast.makeText(Information.this, "response not received", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(Information.this, "response not received", Toast.LENGTH_SHORT).show();
                         try {
                             JSONObject jObjError = new JSONObject(response.errorBody().string());
                             /* String status = jObjError.getString("detail");

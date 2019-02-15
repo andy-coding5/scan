@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
         if (serial_num.equals("")) {
             LoginActivity.Build_alert_dialog(MainActivity.this, "Input Error", "Please Enter The Value of Serial Number");
         } else {
-            Toast.makeText(this, serial_num, Toast.LENGTH_SHORT).show();
+           // Toast.makeText(this, serial_num, Toast.LENGTH_SHORT).show();
             //call API of search
 
             Call<Search> call = api.getSearchJason(globalValues.APIKEY, "Token " + pref.getString("token", null), serial_num, "Android");
@@ -148,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
 
 
                             } catch (Exception e) {
-                                Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                                //Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
                             }
                         }
                     } else {
@@ -161,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
 
 
                         } catch (Exception e) {
-                            Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                            //Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
                         }
                     }
                 }
@@ -194,7 +194,7 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<Login> call, Response<Login> response) {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
-                    Toast.makeText(MainActivity.this, "new token: " + "token " + response.body().getData().getToken(), Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(MainActivity.this, "new token: " + "token " + response.body().getData().getToken(), Toast.LENGTH_SHORT).show();
                     editor.putString("token", response.body().getData().getToken());
                     editor.commit();
 
@@ -207,7 +207,7 @@ public class MainActivity extends AppCompatActivity {
                         Build_alert_dialog(getApplicationContext(), status, error_msg);
 
                     } catch (Exception e) {
-                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                       // Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 }
             }

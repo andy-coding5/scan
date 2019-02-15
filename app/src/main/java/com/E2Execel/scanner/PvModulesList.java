@@ -124,7 +124,7 @@ public class PvModulesList extends AppCompatActivity {
                         //Build_alert_dialog(getApplicationContext(), "Error", status);
 
                     } catch (Exception e) {
-                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 }
 
@@ -155,7 +155,7 @@ public class PvModulesList extends AppCompatActivity {
             public void onResponse(Call<Login> call, Response<Login> response) {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
-                    Toast.makeText(PvModulesList.this, "new token: " + "token " + response.body().getData().getToken(), Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(PvModulesList.this, "new token: " + "token " + response.body().getData().getToken(), Toast.LENGTH_SHORT).show();
                     editor.putString("token", response.body().getData().getToken());
                     editor.commit();
 
@@ -168,7 +168,7 @@ public class PvModulesList extends AppCompatActivity {
                         Build_alert_dialog(getApplicationContext(), status, error_msg);
 
                     } catch (Exception e) {
-                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                       // Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 }
             }
@@ -233,7 +233,7 @@ public class PvModulesList extends AppCompatActivity {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(context, "id of clicked PV module: " + thisPvmodule.getId(), Toast.LENGTH_LONG).show();
+                   // Toast.makeText(context, "id of clicked PV module: " + thisPvmodule.getId(), Toast.LENGTH_LONG).show();
 
                     String ID = String.valueOf(thisPvmodule.getId());       //ID of clicked Pv module
                     //globalValues.setID(thisPvmodule.getId().toString());
@@ -276,7 +276,7 @@ public class PvModulesList extends AppCompatActivity {
                 } else {
                     update_token();
 
-                    Toast.makeText(PvModulesList.this, "response not received", Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(PvModulesList.this, "response not received", Toast.LENGTH_SHORT).show();
                     try {
                         JSONObject jObjError = new JSONObject(response.errorBody().string());
                         /* String status = jObjError.getString("detail");
@@ -286,7 +286,7 @@ public class PvModulesList extends AppCompatActivity {
                         //Build_alert_dialog(getApplicationContext(), "Error", status);
 
                     } catch (Exception e) {
-                        Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                       // Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 }
 
