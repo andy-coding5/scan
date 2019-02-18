@@ -103,8 +103,7 @@ public class MainActivity extends AppCompatActivity {
         progressDialog.setMessage("Wait");
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 
-        update_token();
-
+        update_token();         //call this onece app starts, so there are very less chances that throught whiole run of app update function shoud be called.
 
     }
 
@@ -118,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
         if (serial_num.equals("")) {
             LoginActivity.Build_alert_dialog(MainActivity.this, "Input Error", "Please Enter The Value of Serial Number");
         } else {
-           // Toast.makeText(this, serial_num, Toast.LENGTH_SHORT).show();
+            // Toast.makeText(this, serial_num, Toast.LENGTH_SHORT).show();
             //call API of search
 
             Call<Search> call = api.getSearchJason(globalValues.APIKEY, "Token " + pref.getString("token", null), serial_num, "Android");
@@ -170,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onFailure(Call<Search> call, Throwable t) {
 
                     progressDialog.dismiss();
-                    Toast.makeText(MainActivity.this, "Please Check Internet Connection", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Failed to reach to the server", Toast.LENGTH_SHORT).show();
 
                 }
             });
@@ -194,9 +193,11 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call<Login> call, Response<Login> response) {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
-                   // Toast.makeText(MainActivity.this, "new token: " + "token " + response.body().getData().getToken(), Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(MainActivity.this, "new token: " + "token " + response.body().getData().getToken(), Toast.LENGTH_SHORT).show();
                     editor.putString("token", response.body().getData().getToken());
                     editor.commit();
+                    //Toast.makeText(MainActivity.this, "Token Updated, press the button again", Toast.LENGTH_SHORT).show();
+
 
                 } else {
                     //but but i can access the error body here.,
@@ -207,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
                         Build_alert_dialog(getApplicationContext(), status, error_msg);
 
                     } catch (Exception e) {
-                       // Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                        // Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 }
             }

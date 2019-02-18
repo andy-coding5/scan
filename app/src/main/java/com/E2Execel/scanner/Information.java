@@ -127,7 +127,6 @@ public class Information extends AppCompatActivity {
         progressDialog.setMessage("Wait");
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 
-        update_token();
 
         Call<Result> call = api.getResultsJson(globalValues.APIKEY, "Token " + pref.getString("token", null), globalValues.getID());
         progressDialog.show();
@@ -220,6 +219,8 @@ public class Information extends AppCompatActivity {
                     //Toast.makeText(Information.this, "new token: " + "token " + response.body().getData().getToken(), Toast.LENGTH_SHORT).show();
                     editor.putString("token", response.body().getData().getToken());
                     editor.commit();
+                    Toast.makeText(Information.this, "Token Updated, press the button again", Toast.LENGTH_SHORT).show();
+
 
                 } else {
                     //but but i can access the error body here.,
@@ -230,7 +231,7 @@ public class Information extends AppCompatActivity {
                         Build_alert_dialog(getApplicationContext(), status, error_msg);
 
                     } catch (Exception e) {
-                       // Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                        // Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 }
             }
@@ -277,6 +278,7 @@ public class Information extends AppCompatActivity {
                         }
 
                     } else {
+                        update_token();
 
                         try {
                             JSONObject jObjError = new JSONObject(response.errorBody().string());
@@ -558,7 +560,7 @@ public class Information extends AppCompatActivity {
                 @Override
                 public void onFailure(Call<Result> call, Throwable t) {
                     progressDialog.dismiss();
-                    Toast.makeText(Information.this, "Please Check Internet Connection", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Information.this, "Failed to reach the server", Toast.LENGTH_SHORT).show();
                 }
             });
 

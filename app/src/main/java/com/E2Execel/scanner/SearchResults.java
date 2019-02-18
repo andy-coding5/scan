@@ -86,7 +86,7 @@ public class SearchResults extends AppCompatActivity {
         pref = getSharedPreferences("SCANNER_PREF", MODE_PRIVATE);
         api = RetroClient.getApiService();
 
-        // Set up progress before call
+        // Set up progress before call`
         progressDialog = new ProgressDialog(SearchResults.this);
         progressDialog.setMax(100);
         progressDialog.setMessage("Wait");

@@ -111,7 +111,7 @@ public class Controller extends AppCompatActivity {
         progressDialog.setMessage("Wait");
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 
-        update_token();
+
 
         check_first();
     }
@@ -134,6 +134,7 @@ public class Controller extends AppCompatActivity {
                     // Toast.makeText(Controller.this, "new token: " + "token " + response.body().getData().getToken(), Toast.LENGTH_SHORT).show();
                     editor.putString("token", response.body().getData().getToken());
                     editor.commit();
+                    Toast.makeText(Controller.this, "Token Updated, press the button again", Toast.LENGTH_SHORT).show();
 
                 } else {
                     //but but i can access the error body here.,
@@ -378,13 +379,13 @@ public class Controller extends AppCompatActivity {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     if (response.body().getStatus().equals("Success")) {
-                        Toast.makeText(Controller.this, "successfully uploaded", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(Controller.this, "successfully uploaded", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(Controller.this, Hpmotor.class));
 
                     }
 
                 } else {
-
+                    update_token();
                     try {
                         JSONObject jObjError = new JSONObject(response.errorBody().string());
                         String status = jObjError.getString("message");
@@ -402,7 +403,7 @@ public class Controller extends AppCompatActivity {
             public void onFailure(Call<UpdateDetails> call, Throwable t) {
 
                 progressDialog.dismiss();
-                Build_alert_dialog(Controller.this, "Connection Error", "Please Check You Internet Connection");
+                Build_alert_dialog(Controller.this, "Connection Error", "Failed to reach the server");
 
             }
         });

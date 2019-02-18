@@ -113,9 +113,6 @@ public class Hpmotor extends AppCompatActivity {
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 
 
-
-        update_token();
-
         check_first();
 
     }
@@ -138,6 +135,8 @@ public class Hpmotor extends AppCompatActivity {
                     //Toast.makeText(Hpmotor.this, "new token: " + "token " + response.body().getData().getToken(), Toast.LENGTH_SHORT).show();
                     editor.putString("token", response.body().getData().getToken());
                     editor.commit();
+                    Toast.makeText(Hpmotor.this, "Token Updated, press the button again", Toast.LENGTH_SHORT).show();
+
 
                 } else {
                     //but but i can access the error body here.,
@@ -152,6 +151,7 @@ public class Hpmotor extends AppCompatActivity {
                     }
                 }
             }
+
             @Override
             public void onFailure(Call<Login> call, Throwable t) {
                 progressDialog.dismiss();
@@ -381,12 +381,13 @@ public class Hpmotor extends AppCompatActivity {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     if (response.body().getStatus().equals("Success")) {
-                        Toast.makeText(Hpmotor.this, "successfully uploaded", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(Hpmotor.this, "successfully uploaded", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(Hpmotor.this, Installation.class));
 
                     }
 
                 } else {
+                    update_token();
 
                     try {
                         JSONObject jObjError = new JSONObject(response.errorBody().string());
@@ -405,7 +406,7 @@ public class Hpmotor extends AppCompatActivity {
             public void onFailure(Call<UpdateDetails> call, Throwable t) {
 
                 progressDialog.dismiss();
-                Build_alert_dialog(Hpmotor.this, "Connection Error", "Please Check You Internet Connection");
+                Build_alert_dialog(Hpmotor.this, "Connection Error", "Failed to reach the server");
 
             }
         });

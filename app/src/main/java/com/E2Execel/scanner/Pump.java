@@ -116,9 +116,6 @@ public class Pump extends AppCompatActivity {
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 
 
-
-        update_token();
-
         check_first();
     }
 
@@ -140,6 +137,8 @@ public class Pump extends AppCompatActivity {
                     // Toast.makeText(Pump.this, "new token: " + "token " + response.body().getData().getToken(), Toast.LENGTH_SHORT).show();
                     editor.putString("token", response.body().getData().getToken());
                     editor.commit();
+                    Toast.makeText(Pump.this, "Token Updated, press the button again", Toast.LENGTH_SHORT).show();
+
 
                 } else {
                     //but but i can access the error body here.,
@@ -388,14 +387,14 @@ public class Pump extends AppCompatActivity {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     if (response.body().getStatus().equals("Success")) {
-                        Toast.makeText(Pump.this, "successfully uploaded", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(Pump.this, "successfully uploaded", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(Pump.this, Controller.class));
 
                     }
 
 
                 } else {
-
+                    update_token();
                     try {
                         JSONObject jObjError = new JSONObject(response.errorBody().string());
                         String status = jObjError.getString("message");
@@ -413,7 +412,7 @@ public class Pump extends AppCompatActivity {
             public void onFailure(Call<UpdateDetails> call, Throwable t) {
 
                 progressDialog.dismiss();
-                Build_alert_dialog(Pump.this, "Connection Error", "Please Check You Internet Connection");
+                Build_alert_dialog(Pump.this, "Connection Error", "Failed to reach to the server");
 
             }
         });

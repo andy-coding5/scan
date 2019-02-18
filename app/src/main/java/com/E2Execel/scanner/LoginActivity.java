@@ -109,6 +109,7 @@ public class LoginActivity extends AppCompatActivity {
                             startActivity(new Intent(LoginActivity.this, MainActivity.class));
                         }
                     } else {
+
                         try {
                             JSONObject jObjError = new JSONObject(response.errorBody().string());
                             String status = jObjError.getString("message");
@@ -125,7 +126,7 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(Call<Login> call, Throwable t) {
                     progressDialog.dismiss();
-                    Toast.makeText(LoginActivity.this, "Please Check Internet Connection", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Failed to reach to the server", Toast.LENGTH_SHORT).show();
 
                 }
             });

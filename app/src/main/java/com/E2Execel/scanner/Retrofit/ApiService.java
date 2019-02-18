@@ -18,7 +18,6 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
-import retrofit2.http.Query;
 
 public interface ApiService {
 
@@ -32,7 +31,6 @@ public interface ApiService {
 
 
     //for SEARCH
-
     @POST("panel/api/v1/search/")
     @FormUrlEncoded
     Call<Search> getSearchJason(@Header("APIKEY") String APIKEY, @Header("Authorization") String Authorization,
@@ -41,7 +39,6 @@ public interface ApiService {
 
     @GET("panel/api/v1/info/{path}")
     Call<Result> getResultsJson(@Header("APIKEY") String APIKEY, @Header("Authorization") String Authorization, @Path("path") String path);
-
 
 
     //add pv module with Id

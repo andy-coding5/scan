@@ -89,7 +89,6 @@ public class PvModulesList extends AppCompatActivity {
         pref = getSharedPreferences("SCANNER_PREF", MODE_PRIVATE);
         editor = pref.edit();
 
-        update_token();
 
         Call<Result> call = api.getResultsJson(globalValues.APIKEY, "Token " + pref.getString("token", null), globalValues.getID());
         progressDialog.show();
@@ -158,6 +157,8 @@ public class PvModulesList extends AppCompatActivity {
                    // Toast.makeText(PvModulesList.this, "new token: " + "token " + response.body().getData().getToken(), Toast.LENGTH_SHORT).show();
                     editor.putString("token", response.body().getData().getToken());
                     editor.commit();
+                    Toast.makeText(PvModulesList.this, "Please try to restrat the application again", Toast.LENGTH_SHORT).show();
+
 
                 } else {
                     //but but i can access the error body here.,
@@ -176,7 +177,7 @@ public class PvModulesList extends AppCompatActivity {
             @Override
             public void onFailure(Call<Login> call, Throwable t) {
                 progressDialog.dismiss();
-                Build_alert_dialog(PvModulesList.this, "Connection Error", "Please Check You Internet Connection");
+                Build_alert_dialog(PvModulesList.this, "Connection Error", "Failed to reach to the server");
             }
         });
 

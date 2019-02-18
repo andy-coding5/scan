@@ -124,7 +124,6 @@ public class Pvmodules extends AppCompatActivity {
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 
 
-
         update_token();
 
         Intent i = getIntent();
@@ -152,9 +151,11 @@ public class Pvmodules extends AppCompatActivity {
             public void onResponse(Call<Login> call, Response<Login> response) {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
-                   // Toast.makeText(Pvmodules.this, "new token: " + "token " + response.body().getData().getToken(), Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(Pvmodules.this, "new token: " + "token " + response.body().getData().getToken(), Toast.LENGTH_SHORT).show();
                     editor.putString("token", response.body().getData().getToken());
                     editor.commit();
+                    Toast.makeText(Pvmodules.this, "Token Updated, press the button again", Toast.LENGTH_SHORT).show();
+
 
                 } else {
                     //but but i can access the error body here.,
@@ -366,9 +367,9 @@ public class Pvmodules extends AppCompatActivity {
             IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
             if (result != null) {
                 if (result.getContents() == null) {
-                   // Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
+                    // Toast.makeText(this, "Cancelled", Toast.LENGTH_LONG).show();
                 } else {
-                   // Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
+                    // Toast.makeText(this, "Scanned: " + result.getContents(), Toast.LENGTH_LONG).show();
                     srno_textview.setText(result.getContents());
                 }
             } else {
@@ -449,14 +450,14 @@ public class Pvmodules extends AppCompatActivity {
                     progressDialog.dismiss();
                     if (response.isSuccessful()) {
                         if (response.body().getStatus().equals("Success")) {
-                            Toast.makeText(Pvmodules.this, "successfully uploaded", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(Pvmodules.this, "successfully uploaded", Toast.LENGTH_SHORT).show();
                             IMAGE_SET = 0;
                             startActivity(new Intent(Pvmodules.this, Pump.class));
 
                         }
 
                     } else {
-
+                        update_token();
                         try {
                             JSONObject jObjError = new JSONObject(response.errorBody().string());
                             String status = jObjError.getString("message");
@@ -464,7 +465,7 @@ public class Pvmodules extends AppCompatActivity {
                             Build_alert_dialog(Pvmodules.this, status, error_msg);
 
                         } catch (Exception e) {
-                           // Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                            // Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                         }
                     }
                     Log.v("upload", "success");
@@ -531,7 +532,7 @@ public class Pvmodules extends AppCompatActivity {
                         }
 
                     } else {
-
+                        update_token();
                         try {
                             JSONObject jObjError = new JSONObject(response.errorBody().string());
                             String status = jObjError.getString("message");
@@ -549,7 +550,7 @@ public class Pvmodules extends AppCompatActivity {
                 public void onFailure(Call<AddPvModule> call, Throwable t) {
 
                     progressDialog.dismiss();
-                    Build_alert_dialog(Pvmodules.this, "Connection Error", "Please Check You Internet Connection");
+                    Build_alert_dialog(Pvmodules.this, "Connection Error", "Failed to reach to the server");
 
                 }
             });

@@ -126,9 +126,6 @@ public class Installation extends AppCompatActivity {
         progressDialog.setMessage("Wait");
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 
-
-        update_token();
-
         check_first();
 
     }
@@ -151,6 +148,8 @@ public class Installation extends AppCompatActivity {
                     //Toast.makeText(Installation.this, "new token: " + "token " + response.body().getData().getToken(), Toast.LENGTH_SHORT).show();
                     editor.putString("token", response.body().getData().getToken());
                     editor.commit();
+                    Toast.makeText(Installation.this, "Token Updated, press the button again", Toast.LENGTH_SHORT).show();
+
 
                 } else {
                     //but but i can access the error body here.,
@@ -161,7 +160,7 @@ public class Installation extends AppCompatActivity {
                         Build_alert_dialog(getApplicationContext(), status, error_msg);
 
                     } catch (Exception e) {
-                       // Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                        // Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 }
             }
@@ -335,7 +334,7 @@ public class Installation extends AppCompatActivity {
 
                     } catch (IOException e) {
                         e.printStackTrace();
-                      //  Toast.makeText(Installation.this, "Failed!", Toast.LENGTH_SHORT).show();
+                        //  Toast.makeText(Installation.this, "Failed!", Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -423,7 +422,7 @@ public class Installation extends AppCompatActivity {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     if (response.body().getStatus().equals("Success")) {
-                        Toast.makeText(Installation.this, "successfully uploaded", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(Installation.this, "successfully uploaded", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(Installation.this, MainActivity.class));
                         finishAffinity();
 
@@ -431,6 +430,7 @@ public class Installation extends AppCompatActivity {
 
 
                 } else {
+                    update_token();
 
                     try {
                         JSONObject jObjError = new JSONObject(response.errorBody().string());
@@ -449,7 +449,7 @@ public class Installation extends AppCompatActivity {
             public void onFailure(Call<UpdateDetails> call, Throwable t) {
 
                 progressDialog.dismiss();
-                Build_alert_dialog(Installation.this, "Connection Error", "Please Check You Internet Connection");
+                Build_alert_dialog(Installation.this, "Connection Error", "Failed to reach to the server");
 
             }
         });
