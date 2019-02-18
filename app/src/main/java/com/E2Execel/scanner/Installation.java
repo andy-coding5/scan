@@ -187,9 +187,9 @@ public class Installation extends AppCompatActivity {
             if ("".equals(globalValues.getInstallationimage())) {
                 imageview.setImageDrawable(getResources().getDrawable(R.drawable.upload_photo));
             } else {
-                Glide.with(this).load("http://192.168.0.110:8000" + globalValues.getInstallationimage()).into(imageview);
+                Glide.with(this).load(globalValues.IP + globalValues.getInstallationimage()).into(imageview);
                 IMAGE_SET = 1;
-                Log.v("image_set", "http://192.168.0.110:800" + globalValues.getInstallationimage());
+                Log.v("image_set", globalValues.IP + globalValues.getInstallationimage());
             }
 
         } else {

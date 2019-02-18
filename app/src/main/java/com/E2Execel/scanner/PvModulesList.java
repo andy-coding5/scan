@@ -226,7 +226,7 @@ public class PvModulesList extends AppCompatActivity {
             final Pvmodule thisPvmodule = pvmodule.get(i);
 
 
-            Glide.with(PvModulesList.this).load("http://192.168.0.110:8000" + thisPvmodule.getImage()).into(pv_imageview);
+            Glide.with(PvModulesList.this).load(globalValues.IP + thisPvmodule.getImage()).into(pv_imageview);
             pv_srno_textview.setText(thisPvmodule.getSrno());        //SrNo of clicked PV module
 
 

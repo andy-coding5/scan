@@ -135,7 +135,7 @@ public class SearchResults extends AppCompatActivity {
 
             name_textview.setText(thisDatum.getName());
             srno_textview.setText(thisDatum.getSrno());
-            Glide.with(SearchResults.this).load("http://192.168.0.110:8000" + thisDatum.getPhoto()).into(im);
+            Glide.with(SearchResults.this).load(globalValues.IP + thisDatum.getPhoto()).into(im);
 
 
             view.setOnClickListener(new View.OnClickListener() {

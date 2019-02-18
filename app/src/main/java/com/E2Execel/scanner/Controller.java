@@ -57,14 +57,12 @@ public class Controller extends AppCompatActivity {
     TextView srno_textview;
     private ImageView imageview;
 
-
     MultipartBody.Part image_file_to_upload;
 
     Uri camUri;
     String imageFilePath;
 
     private int GALLERY = 1, CAMERA = 2;
-
 
     private ProgressDialog progressDialog;
 
@@ -76,7 +74,6 @@ public class Controller extends AppCompatActivity {
 
     String[] app_permission = {Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private final static int ALL_PERMISSIONS_RESULT = 1240;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,7 +110,7 @@ public class Controller extends AppCompatActivity {
         progressDialog.setMax(100);
         progressDialog.setMessage("Wait");
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        
+
         update_token();
 
         check_first();
@@ -171,14 +168,13 @@ public class Controller extends AppCompatActivity {
             if ("".equals(globalValues.getControllerimage())) {
                 imageview.setImageDrawable(getResources().getDrawable(R.drawable.upload_photo));
             } else {
-                Glide.with(this).load("http://192.168.0.110:8000" + globalValues.getControllerimage()).into(imageview);
+                Glide.with(this).load(globalValues.IP + globalValues.getControllerimage()).into(imageview);
                 IMAGE_SET = 1;
-                Log.v("image_set", "http://192.168.0.110:8000" + globalValues.getControllerimage());
+                Log.v("image_set", globalValues.IP + globalValues.getControllerimage());
             }
         } else {
             imageview.setImageDrawable(getResources().getDrawable(R.drawable.upload_photo));
         }
-
 
     }
 
@@ -199,9 +195,7 @@ public class Controller extends AppCompatActivity {
             if (ContextCompat.checkSelfPermission(this, perm) != PackageManager.PERMISSION_GRANTED) {
                 //ask to grant the permission
                 listPermissionNeeded.add(perm);
-
             }
-
         }
 
         if (!listPermissionNeeded.isEmpty()) {
@@ -388,7 +382,6 @@ public class Controller extends AppCompatActivity {
                         startActivity(new Intent(Controller.this, Hpmotor.class));
 
                     }
-
 
                 } else {
 

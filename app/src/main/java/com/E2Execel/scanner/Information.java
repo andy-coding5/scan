@@ -159,7 +159,7 @@ public class Information extends AppCompatActivity {
                     globalValues.setInstallationimage(data.getInstallationimage());
 
 
-                    Glide.with(Information.this).load("http://192.168.0.110:8000" + data.getPhoto()).into(imageview_photo);
+                    Glide.with(Information.this).load(globalValues.IP + data.getPhoto()).into(imageview_photo);
                     t_v_srno.setText(data.getSrno());
                     t_v_name.setText(data.getName());
                     t_v_mobile.setText(data.getMobile());
@@ -522,7 +522,7 @@ public class Information extends AppCompatActivity {
                         globalValues.setInstallationimage(data.getInstallationimage());
 
 
-                        Glide.with(Information.this).load("http://192.168.0.110:8000" + data.getPhoto()).into(imageview_photo);
+                        Glide.with(Information.this).load(globalValues.IP + data.getPhoto()).into(imageview_photo);
                         t_v_srno.setText(data.getSrno());
                         t_v_name.setText(data.getName());
                         t_v_mobile.setText(data.getMobile());

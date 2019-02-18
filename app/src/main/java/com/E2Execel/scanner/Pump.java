@@ -173,9 +173,9 @@ public class Pump extends AppCompatActivity {
             if ("".equals(globalValues.getPumpimage())) {
                 imageview.setImageDrawable(getResources().getDrawable(R.drawable.upload_photo));
             } else {
-                Glide.with(this).load("http://192.168.0.110:8000" + globalValues.getPumpimage()).into(imageview);
+                Glide.with(this).load(globalValues.IP + globalValues.getPumpimage()).into(imageview);
                 IMAGE_SET = 1;
-                Log.v("image_set", "http://192.168.0.110:8000" + globalValues.getPumpimage());
+                Log.v("image_set", globalValues.IP + globalValues.getPumpimage());
             }
 
         } else {

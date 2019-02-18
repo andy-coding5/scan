@@ -57,8 +57,7 @@ public interface ApiService {
     @POST("panel/api/v1/pvmodule")
     Call<AddPvModule> addPvModuleWithOutId(@Header("APIKEY") String APIKEY, @Header("Authorization") String Authorization,
                                         @Part MultipartBody.Part file1, @Part("srno") RequestBody srno,
-                                        @Part("panel") RequestBody panel,
-                                        @Part("Source") RequestBody Source);
+                                        @Part("panel") RequestBody panel, @Part("Source") RequestBody Source);
 
 
     //for Pump info

@@ -207,9 +207,9 @@ public class Pvmodules extends AppCompatActivity {
                 imageview.setImageDrawable(getResources().getDrawable(R.drawable.upload_photo));
             } else {
 
-                Glide.with(this).load("http://192.168.0.110:8000" + pvmoduleimage).into(imageview);
+                Glide.with(this).load(globalValues.IP + pvmoduleimage).into(imageview);
                 IMAGE_SET = 1;
-                Log.v("image_set", "http://192.168.0.110:8000" + pvmoduleimage);
+                Log.v("image_set", globalValues.IP + pvmoduleimage);
             }
 
         } else {

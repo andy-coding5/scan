@@ -168,9 +168,9 @@ public class Hpmotor extends AppCompatActivity {
             if ("".equals(globalValues.getHpmotorimage())) {
                 imageview.setImageDrawable(getResources().getDrawable(R.drawable.upload_photo));
             } else {
-                Glide.with(this).load("http://192.168.0.110:8000" + globalValues.getHpmotorimage()).into(imageview);
+                Glide.with(this).load(globalValues.IP + globalValues.getHpmotorimage()).into(imageview);
                 IMAGE_SET = 1;
-                Log.v("image_set", "http://192.168.0.110:800" + globalValues.getHpmotorimage());
+                Log.v("image_set", globalValues.IP + globalValues.getHpmotorimage());
             }
 
         } else {

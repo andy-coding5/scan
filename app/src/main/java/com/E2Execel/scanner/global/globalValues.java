@@ -6,6 +6,7 @@ import java.util.List;
 
 public class globalValues {
     public static String APIKEY = "931d2c3421e9499098676ac0122aaca1";
+    public static String IP = "http://192.168.0.100:8000";
     private static String ID = "";
     private static List<Pvmodule> pvmodule;
     private static String controllersrno = "";
