@@ -125,7 +125,7 @@ public class Installation extends AppCompatActivity {
         // Set up progress before call
         progressDialog = new ProgressDialog(Installation.this);
         progressDialog.setMax(100);
-        progressDialog.setMessage("Wait");
+        progressDialog.setMessage("Loading");
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 
         check_first();

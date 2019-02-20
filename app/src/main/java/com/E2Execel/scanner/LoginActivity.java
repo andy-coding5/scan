@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
         // Set up progress before call
         progressDialog = new ProgressDialog(LoginActivity.this);
         progressDialog.setMax(100);
-        progressDialog.setMessage("Wait");
+        progressDialog.setMessage("Loading");
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 
     }

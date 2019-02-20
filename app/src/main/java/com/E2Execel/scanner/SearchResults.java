@@ -89,7 +89,7 @@ public class SearchResults extends AppCompatActivity {
         // Set up progress before call`
         progressDialog = new ProgressDialog(SearchResults.this);
         progressDialog.setMax(100);
-        progressDialog.setMessage("Wait");
+        progressDialog.setMessage("Loading");
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 
 

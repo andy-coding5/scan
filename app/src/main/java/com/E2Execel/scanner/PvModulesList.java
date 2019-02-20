@@ -81,7 +81,7 @@ public class PvModulesList extends AppCompatActivity {
         // Set up progress before call
         progressDialog = new ProgressDialog(PvModulesList.this);
         progressDialog.setMax(100);
-        progressDialog.setMessage("Wait");
+        progressDialog.setMessage("Loading");
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 
 

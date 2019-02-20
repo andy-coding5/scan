@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements InternetConnectiv
         // Set up progress before call
         progressDialog = new ProgressDialog(MainActivity.this);
         progressDialog.setMax(100);
-        progressDialog.setMessage("Wait");
+        progressDialog.setMessage("Loading");
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 
         update_token();         //call this once app starts, so there are very less chances that through whole run of app update function should be called.

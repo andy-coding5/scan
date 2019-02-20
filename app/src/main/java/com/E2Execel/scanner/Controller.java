@@ -111,7 +111,7 @@ public class Controller extends AppCompatActivity {
         // Set up progress before call
         progressDialog = new ProgressDialog(Controller.this);
         progressDialog.setMax(100);
-        progressDialog.setMessage("Wait");
+        progressDialog.setMessage("Loading");
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 
         check_first();
