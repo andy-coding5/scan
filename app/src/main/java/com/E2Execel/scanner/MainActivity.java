@@ -3,12 +3,16 @@ package com.E2Execel.scanner;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -21,6 +25,8 @@ import com.E2Execel.scanner.Pojo.search_details.Search;
 import com.E2Execel.scanner.Retrofit.ApiService;
 import com.E2Execel.scanner.Retrofit.RetroClient;
 import com.E2Execel.scanner.global.globalValues;
+import com.treebo.internetavailabilitychecker.InternetAvailabilityChecker;
+import com.treebo.internetavailabilitychecker.InternetConnectivityListener;
 
 import org.json.JSONObject;
 
@@ -33,13 +39,14 @@ import retrofit2.Response;
 
 import static com.E2Execel.scanner.LoginActivity.Build_alert_dialog;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements InternetConnectivityListener {
 
     private EditText serial_num_edittext;
     private ApiService api;
     private ProgressDialog progressDialog;
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
+    InternetAvailabilityChecker mInternetAvailabilityChecker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,12 +65,15 @@ public class MainActivity extends AppCompatActivity {
         Button logout_button = view.findViewById(R.id.action_bar_logout);
 
 
+        InternetAvailabilityChecker.init(this);
+        mInternetAvailabilityChecker = InternetAvailabilityChecker.getInstance();
+        mInternetAvailabilityChecker.addInternetConnectivityListener(this);
+
         logout_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
-
 
                 // Setting Dialog Message
                 alertDialog.setMessage("Are you sure you want to Logout?");
@@ -103,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
         progressDialog.setMessage("Wait");
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 
-        update_token();         //call this onece app starts, so there are very less chances that throught whiole run of app update function shoud be called.
+        update_token();         //call this once app starts, so there are very less chances that through whole run of app update function should be called.
 
     }
 
@@ -227,5 +237,26 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         finishAffinity();
+    }
+
+
+    @Override
+    public void onInternetConnectivityChanged(boolean isConnected) {
+        if (isConnected == true) {
+            Toast.makeText(this, "Go Online", Toast.LENGTH_SHORT).show();
+            Log.v("internet", "Go Online");
+
+        } else {
+            Toast.makeText(this, "You are OFFLINE", Toast.LENGTH_SHORT).show();
+            Log.v("internet", "You are OFFLINE");
+        }
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mInternetAvailabilityChecker.removeInternetConnectivityChangeListener(this);
+
     }
 }

@@ -26,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.E2Execel.scanner.Image_compressor.ImageCompressor;
 import com.E2Execel.scanner.Pojo.login_details.Login;
 import com.E2Execel.scanner.Pojo.update_details.UpdateDetails;
 import com.E2Execel.scanner.Retrofit.ApiService;
@@ -63,6 +64,7 @@ public class Controller extends AppCompatActivity {
     String imageFilePath;
 
     private int GALLERY = 1, CAMERA = 2;
+    ImageCompressor ic;
 
     private ProgressDialog progressDialog;
 
@@ -100,6 +102,7 @@ public class Controller extends AppCompatActivity {
 
         srno_textview = findViewById(R.id.input_srno);
         imageview = findViewById(R.id.iv);
+        ic = new ImageCompressor(Controller.this);
 
         api = RetroClient.getApiService();
         pref = getSharedPreferences("SCANNER_PREF", MODE_PRIVATE);
@@ -111,16 +114,32 @@ public class Controller extends AppCompatActivity {
         progressDialog.setMessage("Wait");
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 
-
-
         check_first();
+    }
+
+    private void check_first() {
+        //previously : !"".equals(globalValues.getControllersrno()
+        if (globalValues.getControllersrno() != null) {
+            srno_textview.setText(globalValues.getControllersrno());
+        }
+        if (globalValues.getControllerimage() != null) {
+            if ("".equals(globalValues.getControllerimage())) {
+                imageview.setImageDrawable(getResources().getDrawable(R.drawable.upload_photo));
+            } else {
+                Glide.with(this).load(globalValues.IP + globalValues.getControllerimage()).into(imageview);
+                IMAGE_SET = 1;
+                Log.v("image_set", globalValues.IP + globalValues.getControllerimage());
+            }
+        } else {
+            imageview.setImageDrawable(getResources().getDrawable(R.drawable.upload_photo));
+        }
+
     }
 
     public void update_token() {
         //pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         //Toast.makeText(this, "email from pref: " + pref.getString("email", "not fetched from pref"), Toast.LENGTH_SHORT).show();
         ApiService api = RetroClient.getApiService();
-
 
         Call<Login> call = api.getLoginJason(pref.getString("email", null), pref.getString("password", null), "Android");
 
@@ -156,27 +175,6 @@ public class Controller extends AppCompatActivity {
                 Build_alert_dialog(Controller.this, "Connection Error", "Please Check You Internet Connection");
             }
         });
-
-
-    }
-
-    private void check_first() {
-        //previously : !"".equals(globalValues.getControllersrno()
-        if (globalValues.getControllersrno() != null) {
-            srno_textview.setText(globalValues.getControllersrno());
-        }
-        if (globalValues.getControllerimage() != null) {
-            if ("".equals(globalValues.getControllerimage())) {
-                imageview.setImageDrawable(getResources().getDrawable(R.drawable.upload_photo));
-            } else {
-                Glide.with(this).load(globalValues.IP + globalValues.getControllerimage()).into(imageview);
-                IMAGE_SET = 1;
-                Log.v("image_set", globalValues.IP + globalValues.getControllerimage());
-            }
-        } else {
-            imageview.setImageDrawable(getResources().getDrawable(R.drawable.upload_photo));
-        }
-
     }
 
     public void scan_code(View view) {
@@ -298,52 +296,56 @@ public class Controller extends AppCompatActivity {
             if (requestCode == GALLERY) {
                 if (data != null) {
                     Uri contentURI = data.getData();
+
+
+                    //   String my_path = contentURI.getPath();
+                    //Uri galleryUri = Uri.parse(ic.compressImage(contentURI.toString()));
+                    imageFilePath = ic.compressImage(contentURI.toString());
+                    Glide.with(this).load(imageFilePath).into(imageview);
+                    // File ff = new File(my_path);
+
+                    //  contentURI = Uri.fromFile(ff);
                     //File file_glr = new File(contentURI.getPath());
-                    try {
-                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
-                        //String path = saveImage(bitmap);
-                        //  Toast.makeText(Pvmodules.this, "Image Saved!", Toast.LENGTH_SHORT).show();
-                        imageview.setImageBitmap(bitmap);
+                    //Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), galleryUri);
+                    //String path = saveImage(bitmap);
+                    //Toast.makeText(Pvmodules.this, "Image Saved!", Toast.LENGTH_SHORT).show();
+                    // imageview.setImageBitmap(bitmap);
 
-                        IMAGE_SET = 1;
-
-
-                        //TAKE PROPER PATH OF FILE.
-                        String[] filePath = {MediaStore.Images.Media.DATA};
-                        Cursor c = getContentResolver().query(contentURI, filePath,
-                                null, null, null);
-                        c.moveToFirst();
-                        int columnIndex = c.getColumnIndex(filePath[0]);
-                        String FilePathStr = c.getString(columnIndex);
-                        c.close();
-
-                        File f = new File(FilePathStr);
-
-                        image_file_to_upload = MultipartBody.Part.createFormData("controllerimage", f.getName(), RequestBody.create(MediaType.parse("image/*"), f));
+                    IMAGE_SET = 1;
 
 
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        // Toast.makeText(Controller.this, "Failed!", Toast.LENGTH_SHORT).show();
-                    }
+                    //TAKE PROPER PATH OF FILE.
+                  /*  String[] filePath = {MediaStore.Images.Media.DATA};
+                    Cursor c = getContentResolver().query(contentURI, filePath,
+                            null, null, null);
+                    c.moveToFirst();
+                    int columnIndex = c.getColumnIndex(filePath[0]);
+                    String FilePathStr = c.getString(columnIndex);
+                    c.close();
+*/
+                    File f = new File(imageFilePath);
+
+                    image_file_to_upload = MultipartBody.Part.createFormData("controllerimage", f.getName(), RequestBody.create(MediaType.parse("image/*"), f));
+
+
                 }
-
             }
-            if (requestCode == CAMERA) {
-                //don't compare the data to null, it will always come as  null because we are providing a file URI, so load with the imageFilePath we obtained before opening the cameraIntent
-                Glide.with(this).load(imageFilePath).into(imageview);
-                IMAGE_SET = 1;
 
-                camUri = Uri.fromFile(new File(imageFilePath));
+        }
+        if (requestCode == CAMERA) {
+            //don't compare the data to null, it will always come as  null because we are providing a file URI, so load with the imageFilePath we obtained before opening the cameraIntent
+            imageFilePath = ic.compressImage(imageFilePath);
+            Glide.with(this).load(imageFilePath).into(imageview);
+            IMAGE_SET = 1;
 
-
-                File file = new File(camUri.getPath());
-
-
-                image_file_to_upload = MultipartBody.Part.createFormData("controllerimage", file.getName(), RequestBody.create(MediaType.parse("image/*"), file));
+            camUri = Uri.fromFile(new File(imageFilePath));
 
 
-            }
+            File file = new File(camUri.getPath());
+
+
+            image_file_to_upload = MultipartBody.Part.createFormData("controllerimage", file.getName(), RequestBody.create(MediaType.parse("image/*"), file));
+
 
             // Toast.makeText(this, "complete", Toast.LENGTH_SHORT).show();
 

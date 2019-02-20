@@ -31,6 +31,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.E2Execel.scanner.Image_compressor.ImageCompressor;
 import com.E2Execel.scanner.Pojo.login_details.Login;
 import com.E2Execel.scanner.Pojo.update_details.UpdateDetails;
 import com.E2Execel.scanner.Retrofit.ApiService;
@@ -70,7 +71,7 @@ public class Installation extends AppCompatActivity {
     String imageFilePath;
 
     private int GALLERY = 1, CAMERA = 2;
-
+    ImageCompressor ic;
 
     private ProgressDialog progressDialog;
     private Dialog dialog;
@@ -115,6 +116,7 @@ public class Installation extends AppCompatActivity {
 
         imageview = findViewById(R.id.iv);
         status_tv = findViewById(R.id.status_textview);
+        ic = new ImageCompressor(Installation.this);
 
         api = RetroClient.getApiService();
         pref = getSharedPreferences("SCANNER_PREF", MODE_PRIVATE);
@@ -308,39 +310,44 @@ public class Installation extends AppCompatActivity {
             if (requestCode == GALLERY) {
                 if (data != null) {
                     Uri contentURI = data.getData();
+
+
+                    //   String my_path = contentURI.getPath();
+                    //Uri galleryUri = Uri.parse(ic.compressImage(contentURI.toString()));
+                    imageFilePath = ic.compressImage(contentURI.toString());
+                    Glide.with(this).load(imageFilePath).into(imageview);
+                    // File ff = new File(my_path);
+
+                    //  contentURI = Uri.fromFile(ff);
                     //File file_glr = new File(contentURI.getPath());
-                    try {
-                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
-                        //String path = saveImage(bitmap);
-                        //  Toast.makeText(Pvmodules.this, "Image Saved!", Toast.LENGTH_SHORT).show();
-                        imageview.setImageBitmap(bitmap);
+                    //Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), galleryUri);
+                    //String path = saveImage(bitmap);
+                    //Toast.makeText(Pvmodules.this, "Image Saved!", Toast.LENGTH_SHORT).show();
+                    // imageview.setImageBitmap(bitmap);
 
-                        IMAGE_SET = 1;
-
-
-                        //TAKE PROPER PATH OF FILE.
-                        String[] filePath = {MediaStore.Images.Media.DATA};
-                        Cursor c = getContentResolver().query(contentURI, filePath,
-                                null, null, null);
-                        c.moveToFirst();
-                        int columnIndex = c.getColumnIndex(filePath[0]);
-                        String FilePathStr = c.getString(columnIndex);
-                        c.close();
-
-                        File f = new File(FilePathStr);
-
-                        image_file_to_upload = MultipartBody.Part.createFormData("installationimage", f.getName(), RequestBody.create(MediaType.parse("image/*"), f));
+                    IMAGE_SET = 1;
 
 
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        //  Toast.makeText(Installation.this, "Failed!", Toast.LENGTH_SHORT).show();
-                    }
+                    //TAKE PROPER PATH OF FILE.
+                  /*  String[] filePath = {MediaStore.Images.Media.DATA};
+                    Cursor c = getContentResolver().query(contentURI, filePath,
+                            null, null, null);
+                    c.moveToFirst();
+                    int columnIndex = c.getColumnIndex(filePath[0]);
+                    String FilePathStr = c.getString(columnIndex);
+                    c.close();
+*/
+                    File f = new File(imageFilePath);
+
+                    image_file_to_upload = MultipartBody.Part.createFormData("installationimage", f.getName(), RequestBody.create(MediaType.parse("image/*"), f));
+
+
                 }
 
             }
             if (requestCode == CAMERA) {
                 //don't compare the data to null, it will always come as  null because we are providing a file URI, so load with the imageFilePath we obtained before opening the cameraIntent
+                imageFilePath = ic.compressImage(imageFilePath);
                 Glide.with(this).load(imageFilePath).into(imageview);
                 IMAGE_SET = 1;
 
